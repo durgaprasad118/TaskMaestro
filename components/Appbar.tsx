@@ -1,6 +1,8 @@
 'use client';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from './ui/button';
 const Appbar = () => {
     const session = useSession();
     return (
@@ -8,10 +10,10 @@ const Appbar = () => {
             <div>Pro manage</div>
             {session?.status == 'authenticated' ? (
                 <div className="flex gap-3">
-                    <img
-                        className="w-10 h-10 rounded-full"
-                        src={session.data?.user?.image || ''}
-                    />
+                    <Avatar>
+                        <AvatarImage src={session.data?.user?.image || ''} />
+                        <AvatarFallback>U</AvatarFallback>
+                    </Avatar>
                     <button
                         onClick={() => signOut()}
                         className="px-4 py-2 bg-red-600 rounded  hover:bg-red-800"
