@@ -1,11 +1,11 @@
-import type { Metadata } from 'next';
 import Appbar from '@/components/Appbar';
+import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Toaster } from 'sonner';
 import './globals.css';
-import Providers from './providers';
+import Providers, { ThemeProvider } from './providers';
 const inter = Inter({ subsets: ['latin'] });
 
+import { Toaster } from '@/components/ui/toaster';
 export const metadata: Metadata = {
     title: 'Task Maestro',
     description: 'Ultimate task manager'
@@ -19,11 +19,13 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <Providers>
-                    <Appbar />
-                    {children}
-                    <Toaster />
-                </Providers>
+                <ThemeProvider attribute="class" defaultTheme="light">
+                    <Providers>
+                        <Appbar />
+                        {children}
+                        <Toaster />
+                    </Providers>
+                </ThemeProvider>
             </body>
         </html>
     );
