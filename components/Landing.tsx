@@ -1,11 +1,10 @@
 'use client';
 import { motion } from 'framer-motion';
+import { signIn } from 'next-auth/react';
+import Footer from './Footer';
 import { HeroHighlight, Highlight } from './ui/hero-highlight';
 import { TypewriterEffectSmooth } from './ui/typewriter-effect';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 export function LandingPage() {
-    const router = useRouter();
     const words = [
         {
             text: 'Build'
@@ -41,7 +40,7 @@ export function LandingPage() {
                 }}
                 className="text-2xl px-4 md:text-4xl lg:text-5xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto "
             >
-                <div className="flex flex-col items-center justify-center h-[40rem]  ">
+                <div className="flex flex-col items-center justify-center h-[130vh]  ">
                     <TypewriterEffectSmooth words={words} />
 
                     <Highlight className="text-black dark:text-white">
@@ -80,6 +79,8 @@ export function LandingPage() {
                             </svg>
                         </button>
                     </div>
+
+                    <Footer />
                 </div>
             </motion.h1>
         </HeroHighlight>
