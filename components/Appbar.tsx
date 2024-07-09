@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ResponsiveControl } from '@/layouts/responsive-control';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { AnimatedTooltipAvatar } from './ui/animated-tooltip';
+import { AnimatedTooltipAvatar } from './ui/animated-tooltip-avatar';
 import { Button } from './ui/button';
 const Appbar = () => {
     const session = useSession();

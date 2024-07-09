@@ -4,6 +4,10 @@ import { signIn, useSession } from 'next-auth/react';
 import Footer from './Footer';
 import { HeroHighlight, Highlight } from './ui/hero-highlight';
 import { TypewriterEffectSmooth } from './ui/typewriter-effect';
+import { AccordionHome } from './Accordion';
+import { AnimatedTooltip } from './ui/animated-tooltip';
+import { features, people } from '@/lib/data';
+import { HoverEffect } from './ui/card-hover-effect';
 export function LandingPage() {
     const session = useSession();
     const words = [
@@ -41,7 +45,7 @@ export function LandingPage() {
                 }}
                 className="text-2xl px-4 md:text-4xl lg:text-5xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto "
             >
-                <div className="flex flex-col items-center justify-center h-[130vh]  ">
+                <div className="flex flex-col items-center justify-center h-[100vh]  ">
                     <TypewriterEffectSmooth words={words} />
 
                     <Highlight className="text-black dark:text-white">
@@ -94,10 +98,31 @@ export function LandingPage() {
                             </button>
                         )}
                     </div>
-
-                    <Footer />
                 </div>
             </motion.h1>
+
+            <div className="my-10">
+                <h2 className="my-4 text-xl text-center sm:text-4xl dark:text-white text-black">
+                    Key Features
+                </h2>
+
+                <div className="max-w-5xl mx-auto px-8">
+                    <HoverEffect items={features} />
+                </div>
+            </div>
+
+            <div className="w-full flex items-center my-10 justify-center">
+                <AccordionHome />
+            </div>
+            <div className="my-20">
+                <h2 className="my-4 text-xl text-center sm:text-3xl dark:text-white text-black">
+                    Join the team
+                </h2>
+                <div className="flex flex-row items-center justify-center w-full">
+                    <AnimatedTooltip items={people} />
+                </div>
+            </div>
+            <Footer />
         </HeroHighlight>
     );
 }

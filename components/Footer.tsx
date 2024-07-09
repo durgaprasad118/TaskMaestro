@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-        <footer className="fixed bottom-0   w-[99vw] shadow ">
+        <footer className="  w-[99vw] shadow ">
             <div className="w-full p-2">
                 <div className="flex items-center justify-between">
                     <a
@@ -49,7 +49,7 @@ const Footer = () => {
                     </ul>
                 </div>
                 <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-                <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">
+                <span className="block mb-3 text-sm text-gray-500 sm:text-center dark:text-gray-400">
                     © {new Date().getFullYear()}{' '}
                     <a href="" className="hover:underline">
                         Task Maestro™
