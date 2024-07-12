@@ -38,21 +38,21 @@ export const people = [
 ];
 export const features = [
     {
-        title: 'Stripe',
+        title: 'Create and Organize',
         description:
-            'A technology company that builds economic infrastructure for the internet.',
-        link: 'https://stripe.com'
+            'Easily add and categorize tasks into lists or projects with due dates and priorities',
+        link: ''
     },
     {
-        title: 'Netflix',
+        title: 'Progress Tracking',
         description:
-            'A streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries, and more on thousands of internet-connected devices.',
-        link: 'https://netflix.com'
+            'Visualize your productivity with simple charts and statistics on completed vs. outstanding tasks.',
+        link: ''
     },
     {
-        title: 'Google',
+        title: '   Customizable Reminders       ',
         description:
-            'A multinational technology company that specializes in Internet-related services and products.',
-        link: 'https://google.com'
+            'Set personalized reminders and receive notifications via email or push alerts to ensure you never miss a task or deadline.',
+        link: ''
     }
 ];

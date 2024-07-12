@@ -12,19 +12,27 @@ export function LandingPage() {
     const session = useSession();
     const words = [
         {
-            text: 'Build'
+            text: 'Simplify'
         },
         {
-            text: 'awesome'
+            text: 'your'
         },
         {
-            text: 'apps'
+            text: 'day, '
+        },
+
+        {
+            text: 'stay'
         },
         {
-            text: 'with'
+            text: 'organized, '
         },
         {
-            text: 'Aceternity.',
+            text: 'stay'
+        },
+        {
+            text: 'Ahead',
+
             className: 'text-blue-500 dark:text-blue-500'
         }
     ];
@@ -48,8 +56,9 @@ export function LandingPage() {
                 <div className="flex flex-col items-center justify-center h-[100vh]  ">
                     <TypewriterEffectSmooth words={words} />
 
-                    <Highlight className="text-black dark:text-white">
-                        remid, assign and get done{' '}
+                    <Highlight className="text-black dark:text-white px-4 py-2 text-lg">
+                        The key is not to prioritize what's on your schedule,
+                        but to schedule your priorities.
                     </Highlight>
                     <div className="flex mt-2 flex-col py-4 md:flex-row space-y-4 md:space-y-0 space-x-0 md:space-x-4">
                         {session.status == 'authenticated' ? (
