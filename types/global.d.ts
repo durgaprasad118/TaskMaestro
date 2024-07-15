@@ -1,8 +1,3 @@
-declare type AssigneeType = {
-    username: string;
-    avatar: string;
-};
-
 declare type KanbanCardType = {
     teamName: TeamNameType;
     taskTitle: string;
@@ -10,6 +5,8 @@ declare type KanbanCardType = {
     assignees: AssigneeType[];
     tags?: string[];
 };
+
+declare type PriorityType = 'P1' | 'P2' | 'P3';
 
 declare type KanbanListType = {
     listName: string;

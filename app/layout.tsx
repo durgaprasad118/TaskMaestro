@@ -2,7 +2,7 @@ import Appbar from '@/components/Appbar';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Providers, { ThemeProvider } from './providers';
+import Providers, { RecoilRootProvider, ThemeProvider } from './providers';
 const inter = Inter({ subsets: ['latin'] });
 
 import { Toaster } from '@/components/ui/toaster';
@@ -19,13 +19,15 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <ThemeProvider attribute="class" defaultTheme="dark">
-                    <Providers>
-                        <Appbar />
-                        {children}
-                        <Toaster />
-                    </Providers>
-                </ThemeProvider>
+                <RecoilRootProvider>
+                    <ThemeProvider attribute="class" defaultTheme="dark">
+                        <Providers>
+                            <Appbar />
+                            {children}
+                            <Toaster />
+                        </Providers>
+                    </ThemeProvider>
+                </RecoilRootProvider>
             </body>
         </html>
     );
