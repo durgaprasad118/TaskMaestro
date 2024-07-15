@@ -1,6 +1,6 @@
 'use client';
-import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useRef, useState } from 'react';
 
 export const DraggableWithFramer = () => {
     const perDragRef = useRef<number>(0);
