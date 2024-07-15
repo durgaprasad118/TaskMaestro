@@ -3,6 +3,19 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { forwardRef } from 'react';
 import { Badge } from './Badge';
+// export const BadgeThemeForTeam: Record<PriorityType, string> = {
+//     P1: 'green',
+//     P2: 'orange',
+//     P3: 'purple'
+// };
+
+declare type TeamNameType = 'CHRONOS' | 'LABS' | 'PHOENIX' | 'LUMOS';
+export const BadgeThemeForTeam: Record<TeamNameType, string> = {
+    CHRONOS: 'green',
+    LABS: 'orange',
+    PHOENIX: 'purple',
+    LUMOS: 'yellow'
+};
 export interface KanbanCardProps
     extends React.HTMLAttributes<HTMLDivElement>,
         KanbanCardType {
@@ -64,10 +77,10 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                     id={`${taskTitle.replaceAll(' ', '-')}-${ticketID}`}
                     {...args}
                 >
-                    {/* <Badge theme={BadgeThemeForTeam[teamName]} className="mb-2"> */}
-                    {/*     {teamName} */}
-                    {/* </Badge> */}
-                    <p className="kanban-card-title text-sm font-medium">
+                    <Badge theme={BadgeThemeForTeam[teamName]} className="mb-2">
+                        {teamName}
+                    </Badge>
+                    <p className=" text-slate-800 kanban-card-title text-sm font-medium">
                         {taskTitle}
                     </p>
                     <div className="my-3 flex flex-row items-center justify-between">

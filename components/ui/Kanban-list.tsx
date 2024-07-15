@@ -1,7 +1,8 @@
-import { forwardRef, ReactNode } from 'react';
+import { forwardRef, ReactNode, useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { KanbanCard } from './Kanban-Card';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
+
 export interface KanbanListProps
     extends React.HTMLAttributes<HTMLDivElement>,
         KanbanListType {
@@ -9,22 +10,21 @@ export interface KanbanListProps
     children?: ReactNode;
 }
 
-/**
- * Represents a Kanban list UI component with draggable cards.
- *
- * @component
- * @example
- * <KanbanList
- *   className="custom-styles"
- *   listName="To Do"
- *   listItems={[
- *     { teamName: 'CHRONOS', taskTitle: 'Task 1', ticketID: 123, assignees: [], tags: ['Tag1'] },
- *   ]}
- *   index={0}
- * />
- */
 export const KanbanList = forwardRef<HTMLDivElement, KanbanListProps>(
     ({ className, listItems = [], listName, index, ...args }, ref) => {
+        const [enabled, setEnabled] = useState(false);
+        useEffect(() => {
+            const animation = requestAnimationFrame(() => setEnabled(true));
+
+            return () => {
+                cancelAnimationFrame(animation);
+                setEnabled(false);
+            };
+        }, []);
+
+        if (!enabled) {
+            return null;
+        }
         return (
             <div>
                 <div className="kanban-list-details-wrapper px-2 mb-2">
@@ -45,27 +45,29 @@ export const KanbanList = forwardRef<HTMLDivElement, KanbanListProps>(
                         >
                             <div className="grid grid-cols-1 gap-2">
                                 {listItems.map(
-                                    (card: KanbanCardType, index: number) => (
-                                        <Draggable
-                                            key={`${card.taskTitle.replaceAll(' ', '-')}-${card.ticketID}`}
-                                            draggableId={`${card.taskTitle.replaceAll(' ', '-')}-${card.ticketID}`}
-                                            index={index}
-                                        >
-                                            {(provided, snapshot) => (
-                                                <div
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                >
-                                                    <KanbanCard
-                                                        key={index}
-                                                        {...card}
-                                                        index={index}
-                                                    />
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    )
+                                    (card: KanbanCardType, index: number) => {
+                                        return (
+                                            <Draggable
+                                                key={`${card.taskTitle.replaceAll(' ', '-')}-${card.ticketID}`}
+                                                draggableId={`${card.taskTitle.replaceAll(' ', '-')}-${card.ticketID}`}
+                                                index={index}
+                                            >
+                                                {(provided, snapshot) => (
+                                                    <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                    >
+                                                        <KanbanCard
+                                                            key={index}
+                                                            {...card}
+                                                            index={index}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        );
+                                    }
                                 )}
                             </div>
                             {provided.placeholder}
