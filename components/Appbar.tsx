@@ -11,7 +11,11 @@ import { ResponsiveControl } from '@/layouts/responsive-control';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { AnimatedTooltipAvatar } from './ui/animated-tooltip-avatar';
 import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { useRecoilState } from 'recoil';
+import { SearchQueryAtom } from '@/store';
 const Appbar = () => {
+    const [search, setSearch] = useRecoilState(SearchQueryAtom);
     const session = useSession();
     return (
         <header className=" border-b   bg-transparent relative z-10">
@@ -29,7 +33,12 @@ const Appbar = () => {
                     </div>
                 </div>
                 {session?.status == 'authenticated' ? (
-                    <div className="mr-8">
+                    <div className="mr-8 flex items-center gap-4">
+                        <Input
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Search Task here"
+                        />
                         <DropdownMenu>
                             <DropdownMenuTrigger>
                                 <AnimatedTooltipAvatar
