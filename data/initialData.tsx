@@ -114,7 +114,7 @@ export const INITIAL_KANBAN_DATA: KanbanListType[] = [
         ]
     },
     {
-        listName: 'Under Review',
+        listName: 'To-do',
         listItems: [
             {
                 priority: 'P2',
@@ -153,7 +153,7 @@ export const INITIAL_KANBAN_DATA: KanbanListType[] = [
         ]
     },
     {
-        listName: 'Shipped',
+        listName: 'Done',
         listItems: [
             {
                 priority: 'P3',

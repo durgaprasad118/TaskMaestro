@@ -28,7 +28,7 @@ export const KanbanList = forwardRef<HTMLDivElement, KanbanListProps>(
         return (
             <div>
                 <div className="kanban-list-details-wrapper mt-4 px-2 mb-2">
-                    <p className="leading-snug font-medium tracking-tight text-gray-500 text-sm">
+                    <p className="leading-snug font-medium tracking-tight text-center text-gray-400 text-sm">
                         {listName}
                     </p>
                 </div>
