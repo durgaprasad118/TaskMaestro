@@ -3,38 +3,39 @@ export const INITIAL_KANBAN_DATA: KanbanListType[] = [
         listName: 'Not Started',
         listItems: [
             {
-                teamName: 'CHRONOS',
-                taskTitle: 'Inbox Design',
+                priority: 'P1',
+                taskTitle: 'Inbox DesignInbox DesignInbox Design',
                 ticketID: 1,
-                tags: ['design', 'blocker'],
+                labels: ['design', 'blocker'],
                 assignees: [
                     {
-                        username: 'yashsehgal',
-                        avatar: 'https://github.com/yashsehgal.png'
+                        username: 'Dp',
+                        avatar: 'https://github.com/durgaprasad118.png'
                     }
                 ]
             },
             {
-                teamName: 'CHRONOS',
+                priority: 'P2',
                 taskTitle: 'Inbox Infrastructure',
                 ticketID: 2,
-                tags: ['backend'],
+                labels: ['backend'],
                 assignees: [
                     {
-                        username: 'yashsehgal',
-                        avatar: 'https://github.com/yashsehgal.png'
+                        username: 'Dp',
+                        avatar: 'https://github.com/durgaprasad118.png'
                     },
                     {
-                        username: 'viveknigam',
-                        avatar: 'https://github.com/viveknigam3003.png'
+                        username: 'kartik',
+
+                        avatar: 'https://github.com/kartikver15gr8.png'
                     }
                 ]
             },
             {
-                teamName: 'CHRONOS',
+                priority: 'P3',
                 ticketID: 8,
                 taskTitle: 'Build Conversation Module',
-                tags: ['frontend', 'data'],
+                labels: ['frontend', 'data'],
                 assignees: []
             }
         ]
@@ -43,64 +44,70 @@ export const INITIAL_KANBAN_DATA: KanbanListType[] = [
         listName: 'In Progress',
         listItems: [
             {
-                teamName: 'LABS',
+                priority: 'P2',
                 taskTitle: "Setup co-pilot API's",
                 ticketID: 3,
-                tags: ['backend', 'API'],
+                labels: ['backend', 'API'],
                 assignees: [
                     {
-                        username: 'viveknigam',
-                        avatar: 'https://github.com/viveknigam3003.png'
+                        username: 'kartik',
+
+                        avatar: 'https://github.com/kartikver15gr8.png'
                     }
                 ]
             },
             {
-                teamName: 'PHOENIX',
+                priority: 'P2',
                 taskTitle: 'Setup redux structure',
                 ticketID: 10,
                 assignees: [
                     {
-                        username: 'yashsehgal',
-                        avatar: 'https://github.com/yashsehgal.png'
+                        username: 'Dp',
+
+                        avatar: 'https://github.com/durgaprasad118.png'
                     }
                 ]
             },
             {
-                teamName: 'LABS',
+                priority: 'P3',
                 taskTitle: 'Build co-pilot UI',
                 ticketID: 4,
-                tags: ['frontend', 'ui'],
+                labels: ['frontend', 'ui'],
                 assignees: [
                     {
-                        username: 'viveknigam',
-                        avatar: 'https://github.com/viveknigam3003.png'
+                        username: 'kartik',
+
+                        avatar: 'https://github.com/kartikver15gr8.png'
                     }
                 ]
             },
             {
-                teamName: 'CHRONOS',
+                priority: 'P1',
                 taskTitle: 'Notification Module',
                 ticketID: 5,
                 assignees: [
                     {
-                        username: 'yashsehgal',
-                        avatar: 'https://github.com/yashsehgal.png'
+                        username: 'Dp',
+
+                        avatar: 'https://github.com/durgaprasad118.png'
                     },
                     {
-                        username: 'viveknigam',
-                        avatar: 'https://github.com/viveknigam3003.png'
+                        username: 'kartik',
+
+                        avatar: 'https://github.com/kartikver15gr8.png'
                     }
                 ]
             },
             {
-                teamName: 'PHOENIX',
+                priority: 'P3',
                 taskTitle: 'Editor Design',
                 ticketID: 11,
-                tags: ['design', 'frontend'],
+                labels: ['design', 'frontend'],
                 assignees: [
                     {
-                        username: 'yashsehgal',
-                        avatar: 'https://github.com/viveknigam3003.png'
+                        username: 'Dp',
+
+                        avatar: 'https://github.com/kartikver15gr8.png'
                     }
                 ]
             }
@@ -110,33 +117,36 @@ export const INITIAL_KANBAN_DATA: KanbanListType[] = [
         listName: 'Under Review',
         listItems: [
             {
-                teamName: 'CHRONOS',
+                priority: 'P2',
                 taskTitle: 'Project table API tests',
                 ticketID: 6,
-                tags: ['api', 'backend', 'testing'],
+                labels: ['api', 'backend', 'testing'],
                 assignees: [
                     {
-                        username: 'yashsehgal',
-                        avatar: 'https://github.com/yashsehgal.png'
+                        username: 'Dp',
+
+                        avatar: 'https://github.com/durgaprasad118.png'
                     }
                 ]
             },
             {
-                teamName: 'CHRONOS',
+                priority: 'P3',
                 taskTitle: 'Project table fixes',
                 ticketID: 9,
                 assignees: [
                     {
-                        username: 'yashsehgal',
-                        avatar: 'https://github.com/yashsehgal.png'
+                        username: 'Dp',
+
+                        avatar: 'https://github.com/durgaprasad118.png'
                     },
                     {
-                        username: 'viveknigam',
-                        avatar: 'https://github.com/viveknigam3003.png'
+                        username: 'kartik',
+
+                        avatar: 'https://github.com/kartikver15gr8.png'
                     },
                     {
-                        username: 'communal',
-                        avatar: 'https://github.com/communal.png'
+                        username: 'harkirat',
+                        avatar: 'https://github.com/hkirat.png'
                     }
                 ]
             }
@@ -146,37 +156,40 @@ export const INITIAL_KANBAN_DATA: KanbanListType[] = [
         listName: 'Shipped',
         listItems: [
             {
-                teamName: 'LUMOS',
+                priority: 'P3',
                 taskTitle: 'Public view links',
                 ticketID: 7,
-                tags: ['frontend', 'backend'],
+                labels: ['frontend', 'backend'],
                 assignees: [
                     {
-                        username: 'yashsehgal',
-                        avatar: 'https://github.com/yashsehgal.png'
+                        username: 'Dp',
+
+                        avatar: 'https://github.com/durgaprasad118.png'
                     }
                 ]
             },
             {
-                teamName: 'LABS',
+                priority: 'P2',
                 taskTitle: 'Command center UI testing',
                 ticketID: 3,
-                tags: ['ui', 'frontend', 'testing'],
+                labels: ['ui', 'frontend', 'testing'],
                 assignees: [
                     {
-                        username: 'viveknigam',
-                        avatar: 'https://github.com/viveknigam3003.png'
+                        username: 'kartik',
+
+                        avatar: 'https://github.com/kartikver15gr8.png'
                     }
                 ]
             },
             {
-                teamName: 'CHRONOS',
+                priority: 'P1',
                 taskTitle: 'Notifictions Phase',
                 ticketID: 4,
                 assignees: [
                     {
-                        username: 'yashsehgal',
-                        avatar: 'https://github.com/yashsehgal.png'
+                        username: 'Dp',
+
+                        avatar: 'https://github.com/durgaprasad118.png'
                     }
                 ]
             }

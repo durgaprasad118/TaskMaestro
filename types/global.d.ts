@@ -1,9 +1,9 @@
 declare type KanbanCardType = {
-    teamName: TeamNameType;
+    priority: PriorityType;
     taskTitle: string;
     ticketID: number;
-    assignees: AssigneeType[];
-    tags?: string[];
+    assignees?: AssigneeType[];
+    labels?: string[];
 };
 
 declare type PriorityType = 'P1' | 'P2' | 'P3';
