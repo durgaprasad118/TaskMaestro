@@ -20,15 +20,17 @@ const filteredKanbanDataSelector = selector<KanbanListType[]>({
                 const isTitleMatch = task.taskTitle
                     .toLowerCase()
                     .includes(searchQuery.toLowerCase());
-                const isAssigneeMatch = task.assignees.some((assignee) =>
-                    assignee.username
-                        .toLowerCase()
-                        .includes(searchQuery.toLowerCase())
-                );
-                const isTagMatch = task.tags?.some((tag) =>
+                const isAssigneeMatch =
+                    task.assignees &&
+                    task?.assignees.some((assignee) =>
+                        assignee.username
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase())
+                    );
+                const isTagMatch = task.labels?.some((tag) =>
                     tag.toLowerCase().includes(searchQuery.toLowerCase())
                 );
-                const isTeamNameMatch = task.teamName
+                const isTeamNameMatch = task.priority
                     .toLowerCase()
                     .includes(searchQuery.toLowerCase());
 

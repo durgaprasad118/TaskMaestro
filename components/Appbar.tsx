@@ -1,4 +1,5 @@
 'use client';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -8,12 +9,10 @@ import {
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { ResponsiveControl } from '@/layouts/responsive-control';
-import { signIn, signOut, useSession } from 'next-auth/react';
-import { AnimatedTooltipAvatar } from './ui/animated-tooltip-avatar';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { useRecoilState } from 'recoil';
 import { SearchQueryAtom } from '@/store';
+import { signIn, signOut, useSession } from 'next-auth/react';
+import { useRecoilState } from 'recoil';
+import { Input } from './ui/input';
 const Appbar = () => {
     const [search, setSearch] = useRecoilState(SearchQueryAtom);
     const session = useSession();
@@ -33,7 +32,7 @@ const Appbar = () => {
                     </div>
                 </div>
                 {session?.status == 'authenticated' ? (
-                    <div className="mr-8 flex items-center gap-4">
+                    <div className="px-4 flex items-center w-[30vw] gap-2">
                         <Input
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
@@ -41,11 +40,18 @@ const Appbar = () => {
                         />
                         <DropdownMenu>
                             <DropdownMenuTrigger>
-                                <AnimatedTooltipAvatar
-                                    id={1}
-                                    name={session?.data?.user?.name || ''}
-                                    image={session.data?.user?.image || ''}
-                                />
+                                <Avatar>
+                                    <AvatarImage
+                                        src={session?.data?.user?.image || ''}
+                                        alt={
+                                            session?.data?.user?.name ||
+                                            'profile Image'
+                                        }
+                                    />
+                                    <AvatarFallback>
+                                        profile Image
+                                    </AvatarFallback>
+                                </Avatar>
                             </DropdownMenuTrigger>
 
                             <DropdownMenuContent className="w-48 text-center">
