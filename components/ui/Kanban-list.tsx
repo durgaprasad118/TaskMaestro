@@ -1,7 +1,7 @@
 import { forwardRef, ReactNode, useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
-import { KanbanCard } from './Kanban-Card';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { KanbanCard } from './Kanban-Card';
 
 export interface KanbanListProps
     extends React.HTMLAttributes<HTMLDivElement>,
@@ -27,7 +27,7 @@ export const KanbanList = forwardRef<HTMLDivElement, KanbanListProps>(
         }
         return (
             <div>
-                <div className="kanban-list-details-wrapper px-2 mb-2">
+                <div className="kanban-list-details-wrapper mt-4 px-2 mb-2">
                     <p className="leading-snug font-medium tracking-tight text-gray-500 text-sm">
                         {listName}
                     </p>
@@ -38,7 +38,7 @@ export const KanbanList = forwardRef<HTMLDivElement, KanbanListProps>(
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             className={cn(
-                                'kanban-list p-2 border-b-4 border-transparent rounded-xl bg-gray-100/80 min-w-[280px] w-fit max-w-[300px] h-[600px] overflow-y-scroll',
+                                'kanban-list p-2 border-b-4 border-transparent rounded-xl   bg-slate-800 min-w-[280px] w-fit max-w-[300px] h-[600px] custom-scrollbar overflow-y-scroll',
                                 className
                             )}
                             {...args}
