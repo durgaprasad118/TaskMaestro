@@ -1,4 +1,6 @@
 'use client';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
     DropdownMenu,
@@ -32,8 +34,21 @@ const Appbar = () => {
                     </div>
                 </div>
                 {session?.status == 'authenticated' ? (
-                    <div className="px-4 flex items-center w-[30vw] gap-2">
+                    <div className="px-4 flex items-center w-[50vw] gap-2">
+                        <div>
+                            <Tabs>
+                                <TabsList className="grid w-[20vw] grid-cols-2">
+                                    <TabsTrigger value="Tasks">
+                                        Tasks
+                                    </TabsTrigger>
+                                    <TabsTrigger value="Calendar">
+                                        Calendar
+                                    </TabsTrigger>
+                                </TabsList>
+                            </Tabs>
+                        </div>
                         <Input
+                            // className="w-[10vw]"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Search Task here"
