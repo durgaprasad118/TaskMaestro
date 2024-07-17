@@ -27,7 +27,7 @@ export const KanbanList = forwardRef<HTMLDivElement, KanbanListProps>(
         }
         return (
             <div>
-                <div className="kanban-list-details-wrapper mt-4 px-2 mb-2">
+                <div className="kanban-list-details-wrapper  px-2 mb-2">
                     <p className="leading-snug font-medium tracking-tight text-center text-gray-400 text-sm">
                         {listName}
                     </p>
@@ -38,7 +38,7 @@ export const KanbanList = forwardRef<HTMLDivElement, KanbanListProps>(
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             className={cn(
-                                'kanban-list p-2 border-b-4 border-transparent rounded-xl   bg-slate-800 min-w-[280px] w-fit max-w-[300px] h-[600px] custom-scrollbar overflow-y-scroll',
+                                'kanban-list p-2 border-b-4 border-transparent rounded-xl   bg-[#1E293B] min-w-[280px] w-fit max-w-[300px] h-[600px] custom-scrollbar overflow-y-scroll',
                                 className
                             )}
                             {...args}
