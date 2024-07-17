@@ -1,4 +1,5 @@
 'use client';
+
 import { ResponsiveControl } from '@/layouts/responsive-control';
 import {
     filteredKanbanDataSelector,
@@ -14,6 +15,7 @@ import {
 } from 'react-beautiful-dnd';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { KanbanList } from './ui/Kanban-list';
+import AddTask from './AddTask';
 
 const KanbanView = () => {
     const [kanbanData, setKanbanData] = useRecoilState(KanbanDataAtom);
@@ -96,6 +98,9 @@ const KanbanView = () => {
 
     return (
         <div>
+            <div className="flex items-center my-2 justify-center">
+                <AddTask />
+            </div>
             <DragDropContext
                 onDragStart={onDragStart}
                 onDragUpdate={onDragUpdate}
