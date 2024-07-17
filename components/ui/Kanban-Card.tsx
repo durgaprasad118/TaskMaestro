@@ -1,7 +1,7 @@
 'use client';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
-import { Calendar as CalendarIcon, ListChecks, Tag, Tags } from 'lucide-react';
+import { Calendar as CalendarIcon, Tag, Tags } from 'lucide-react';
 import Image from 'next/image';
 import React, { forwardRef, useId } from 'react';
 import { Badge } from './Badge';
@@ -56,7 +56,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                         id={id}
                         {...args}
                         key={id}
-                        className="relative group bg-gradient-to-b dark:from-slate-900 from-slate-200 dark:to-slate-950 to-slate-300 p-6 rounded-3xl overflow-hidden"
+                        className="relative group   bg-gradient-to-b dark:from-slate-900 from-slate-200 dark:to-slate-950 to-slate-300 p-6 rounded-3xl overflow-hidden"
                     >
                         <Grid size={20} />
 
@@ -101,7 +101,45 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                         <div className="flex items-center justify-between">
                             {/*Add a check if theree are  subtasks then onbly render this else don't  */}
                             <div className="flex items-center">
-                                <ListChecks className="h-3" />
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="1em"
+                                    height="1em"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <g
+                                        fill="none"
+                                        stroke="#7c3aed"
+                                        strokeWidth={2}
+                                    >
+                                        <rect
+                                            width={4}
+                                            height={4}
+                                            x={18}
+                                            y={9}
+                                            rx={2}
+                                            transform="rotate(90 18 9)"
+                                        ></rect>
+                                        <rect
+                                            width={4}
+                                            height={4}
+                                            x={18}
+                                            y={17}
+                                            rx={2}
+                                            transform="rotate(90 18 17)"
+                                        ></rect>
+                                        <rect
+                                            width={4}
+                                            height={4}
+                                            x={3}
+                                            y={7}
+                                            rx={2}
+                                            transform="rotate(-90 3 7)"
+                                        ></rect>
+                                        <path d="M5 8v7c0 1.886 0 2.828.586 3.414C6.172 19 7.114 19 9 19h5"></path>
+                                        <path d="M5 7c0 1.886 0 2.828.586 3.414C6.172 11 7.114 11 9 11h5"></path>
+                                    </g>
+                                </svg>
                                 <span className="text-xs font-medium text-slate-400">
                                     {'1/4'}
                                 </span>
