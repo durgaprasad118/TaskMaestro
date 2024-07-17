@@ -1,4 +1,4 @@
-import { AnimatedModalDemo } from '@/components/Update';
+import { AnimatedModalDemo } from '@/components/AddTaskModal';
 import KanbanView from '@/components/KanbanView';
 import { LandingPage } from '@/components/Landing';
 import DialogDemo from '../components/Test';
@@ -7,7 +7,6 @@ export default function Home() {
         <main className="flex  flex-col items-center justify-between ">
             {/* <LandingPage /> */}
             <KanbanView />
-            <DialogDemo />
             <AnimatedModalDemo />
         </main>
     );

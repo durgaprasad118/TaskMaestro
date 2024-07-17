@@ -43,7 +43,7 @@ export function AnimatedModalDemo() {
                                     placeholder="task name"
                                 />
                             </div>
-                            <div className="flex gap-2 justify-between items-center">
+                            <div className="z-1 flex gap-2 justify-between items-center">
                                 <Select>
                                     <SelectTrigger className="w-[180px]">
                                         <SelectValue placeholder="Priority" />
@@ -67,9 +67,6 @@ export function AnimatedModalDemo() {
                         </div>
                     </ModalContent>
                     <ModalFooter className="gap-4 flex items-center justify-center">
-                        <button className="px-2 py-1 bg-gray-200 text-black dark:bg-black dark:border-black dark:text-white border border-gray-300 rounded-md text-sm w-28">
-                            Cancel
-                        </button>
                         <button className="bg-black text-white dark:bg-white dark:text-black text-sm px-2 py-1 rounded-md border border-black w-28">
                             Add Task
                         </button>

@@ -15,7 +15,7 @@ import {
 } from 'react-beautiful-dnd';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { KanbanList } from './ui/Kanban-list';
-import AddTask from './AddTask';
+import AddTask from './SideBarModal';
 
 const KanbanView = () => {
     const [kanbanData, setKanbanData] = useRecoilState(KanbanDataAtom);

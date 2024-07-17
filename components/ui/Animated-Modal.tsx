@@ -77,20 +77,8 @@ export const ModalBody = ({
             document.body.style.overflow = 'auto';
         }
     }, [open]);
-    const handleOutsideClick = (event: MouseEvent | TouchEvent) => {
-        if (
-            modalRef.current &&
-            !modalRef.current.contains(event.target as Node)
-        ) {
-            const modalContent =
-                modalRef.current.querySelector('.modal-content');
-            if (!modalContent || !modalContent.contains(event.target as Node)) {
-                setOpen(false);
-            }
-        }
-    };
 
-    useOutsideClick(modalRef, handleOutsideClick);
+    useOutsideClick(modalRef, () => setOpen(false));
 
     return (
         <AnimatePresence>
@@ -99,7 +87,7 @@ export const ModalBody = ({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1, backdropFilter: 'blur(10px)' }}
                     exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-                    className="fixed [perspective:800px] [transform-style:preserve-3d] inset-0 h-full w-full flex items-center justify-center z-50"
+                    className="fixed [perspective:800px] [transform-style:preserve-3d] inset-0 h-full w-full flex items-center justify-center z-50 modal-overlay"
                 >
                     <Overlay />
                     <motion.div
@@ -171,7 +159,7 @@ const Overlay = ({ className }: { className?: string }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, backdropFilter: 'blur(10px)' }}
             exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-            className={`fixed inset-0 h-full w-full bg-black bg-opacity-50 z-50 ${className}`}
+            className={`fixed inset-0 h-full w-full bg-black bg-opacity-50 z-50 modal-overlay ${className}`}
         ></motion.div>
     );
 };
@@ -202,6 +190,7 @@ const CloseIcon = () => {
         </button>
     );
 };
+
 export const useOutsideClick = (
     ref: React.RefObject<HTMLDivElement>,
     callback: Function
@@ -211,12 +200,13 @@ export const useOutsideClick = (
             if (!ref.current || ref.current.contains(event.target as Node)) {
                 return;
             }
-            // Check if the click target is a descendant of the modal content
-            const modalContent = ref.current.querySelector('.modal-content');
-            if (modalContent && modalContent.contains(event.target as Node)) {
-                return;
+            if (
+                (event.target as HTMLElement).classList.contains(
+                    'modal-overlay'
+                )
+            ) {
+                callback(event);
             }
-            callback(event);
         };
 
         document.addEventListener('mousedown', listener);
