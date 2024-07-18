@@ -10,9 +10,10 @@ export const Badge = forwardRef<HTMLDivElement, BadgeProps>(
             <div
                 ref={ref}
                 className={cn(
-                    'px-2  py-1 rounded-md text-[9px] font-medium w-fit uppercase hover:brightness-95',
+                    'px-2  rounded-md text-[9px] font-medium w-fit uppercase hover:brightness-95',
                     !theme && 'bg-gray-100 text-gray-500',
                     theme === 'green' && 'text-green-600 bg-green-100',
+                    theme === 'purple' && 'text-[#7c3aed] bg-purple-200',
                     theme === 'red' && 'text-red-500 bg-red-100',
                     theme === 'yellow' && 'text-yellow-500 bg-yellow-100',
                     className

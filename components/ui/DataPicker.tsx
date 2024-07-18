@@ -22,9 +22,15 @@ import {
 
 export function DatePickerWithPresets() {
     const [date, setDate] = React.useState<Date>();
+    const [open, setOpen] = React.useState(false);
+
+    const handleDateSelect = (selectedDate: Date | undefined) => {
+        setDate(selectedDate);
+        setOpen(false);
+    };
 
     return (
-        <Popover>
+        <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
                     variant={'outline'}
@@ -39,9 +45,10 @@ export function DatePickerWithPresets() {
             </PopoverTrigger>
             <PopoverContent className="flex w-auto flex-col space-y-2 p-2">
                 <Select
-                    onValueChange={(value) =>
-                        setDate(addDays(new Date(), parseInt(value)))
-                    }
+                    onValueChange={(value) => {
+                        const newDate = addDays(new Date(), parseInt(value));
+                        handleDateSelect(newDate);
+                    }}
                 >
                     <SelectTrigger>
                         <SelectValue placeholder="Select" />
@@ -57,7 +64,7 @@ export function DatePickerWithPresets() {
                     <Calendar
                         mode="single"
                         selected={date}
-                        onSelect={setDate}
+                        onSelect={handleDateSelect}
                     />
                 </div>
             </PopoverContent>

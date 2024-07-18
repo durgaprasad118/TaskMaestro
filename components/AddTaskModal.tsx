@@ -1,14 +1,4 @@
 'use client';
-import { Label } from '@radix-ui/react-dropdown-menu';
-import {
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalTrigger
-} from './ui/Animated-Modal';
-import { Input } from './ui/input';
-
 import {
     Select,
     SelectContent,
@@ -17,9 +7,23 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select';
+import { Label } from '@radix-ui/react-dropdown-menu';
+import { useState } from 'react';
+import {
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalTrigger
+} from './ui/Animated-Modal';
 import { DatePickerWithPresets } from './ui/DataPicker';
+import { Input } from './ui/input';
+import Subtasks from './ui/Sub-tasks';
+import { TagsInput } from './ui/TagsInput';
 
 export function AnimatedModalDemo() {
+    const [tags, setTags] = useState<string[]>([]);
+    const [tasks, setTasks] = useState<string[]>([]);
     return (
         <div className="py-40  bg-slate-950 flex items-center justify-center">
             <Modal>
@@ -46,7 +50,10 @@ export function AnimatedModalDemo() {
                             <div className="z-1 flex gap-2 justify-between items-center">
                                 <Select>
                                     <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder="Priority" />
+                                        <SelectValue
+                                            placeholder="Priority"
+                                            className="text-slate-500"
+                                        />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
@@ -64,6 +71,10 @@ export function AnimatedModalDemo() {
                                 </Select>
                                 <DatePickerWithPresets />
                             </div>
+                            <div className="">
+                                <TagsInput tags={tags} setTags={setTags} />
+                            </div>
+                            <Subtasks tasks={tasks} />
                         </div>
                     </ModalContent>
                     <ModalFooter className="gap-4 flex items-center justify-center">
