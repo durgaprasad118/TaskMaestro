@@ -6,6 +6,27 @@ import Image from 'next/image';
 import React, { forwardRef, useId } from 'react';
 import { Badge } from './Badge';
 import { Checkbox } from './checkbox';
+
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+} from '@/components/ui/select';
+import { DatePickerWithPresets } from './DataPicker';
+import { Button } from './button';
+import { Input } from './input';
+import { Label } from './label';
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger
+} from './sheet';
 declare type PriorityNameType = 'P1' | 'P2' | 'P3';
 export const BageForPriority: Record<PriorityNameType, string> = {
     P1: 'red',
@@ -51,123 +72,171 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                 }}
             >
                 <div>
-                    <div
-                        ref={ref}
-                        id={id}
-                        {...args}
-                        key={id}
-                        className="relative group   bg-gradient-to-b dark:from-slate-900 from-slate-200 dark:to-slate-950 to-slate-300 p-6 rounded-3xl overflow-hidden"
-                    >
-                        <Grid size={20} />
+                    <Sheet>
+                        <SheetTrigger asChild>
+                            <div
+                                ref={ref}
+                                id={id}
+                                {...args}
+                                key={id}
+                                className="relative group   bg-gradient-to-b dark:from-slate-900 from-slate-200 dark:to-slate-950 to-slate-300 p-6 rounded-3xl overflow-hidden"
+                            >
+                                <Grid size={20} />
 
-                        <Badge
-                            theme={BageForPriority[priority]}
-                            className="mb-2"
-                        >
-                            {priority}
-                        </Badge>
-                        <div className="flex items-center space-x-2">
-                            <Checkbox className="rounded-full" id={id} />
-                            <p className="group-hover:translate-x-1 overflow-hidden  text-ellipsis whitespace-nowrap  transition-transform duration-200 font-bold text-neutral-800 dark:text-slate-300 relative z-20">
-                                {taskTitle}
-                            </p>
-                        </div>
-
-                        <div className="my-3 flex flex-row items-center justify-between">
-                            <div className="flex items-center">
-                                <CalendarIcon className=" h-3 " />
-                                <span className="text-gray-400 font-medium text-xs">
-                                    {format(new Date(), 'do MMMM')}
-                                </span>
-                            </div>
-                            <div className="flex flex-row items-center justify-end gap-0">
-                                {assignees?.map(
-                                    ({ username, avatar }, index) => {
-                                        return (
-                                            <Image
-                                                key={index}
-                                                src={avatar}
-                                                alt={username}
-                                                width={24}
-                                                height={24}
-                                                className="rounded-full even:ml-[-4px]"
-                                                priority
-                                            />
-                                        );
-                                    }
-                                )}
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            {/*Add a check if theree are  subtasks then onbly render this else don't  */}
-                            <div className="flex items-center">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="1em"
-                                    height="1em"
-                                    viewBox="0 0 24 24"
+                                <Badge
+                                    theme={BageForPriority[priority]}
+                                    className="mb-2"
                                 >
-                                    <g
-                                        fill="none"
-                                        stroke="#7c3aed"
-                                        strokeWidth={2}
-                                    >
-                                        <rect
-                                            width={4}
-                                            height={4}
-                                            x={18}
-                                            y={9}
-                                            rx={2}
-                                            transform="rotate(90 18 9)"
-                                        ></rect>
-                                        <rect
-                                            width={4}
-                                            height={4}
-                                            x={18}
-                                            y={17}
-                                            rx={2}
-                                            transform="rotate(90 18 17)"
-                                        ></rect>
-                                        <rect
-                                            width={4}
-                                            height={4}
-                                            x={3}
-                                            y={7}
-                                            rx={2}
-                                            transform="rotate(-90 3 7)"
-                                        ></rect>
-                                        <path d="M5 8v7c0 1.886 0 2.828.586 3.414C6.172 19 7.114 19 9 19h5"></path>
-                                        <path d="M5 7c0 1.886 0 2.828.586 3.414C6.172 11 7.114 11 9 11h5"></path>
-                                    </g>
-                                </svg>
-                                <span className="text-xs font-medium text-slate-400">
-                                    {'1/4'}
-                                </span>
+                                    {priority}
+                                </Badge>
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox
+                                        className="rounded-full"
+                                        id={id}
+                                    />
+                                    <p className="group-hover:translate-x-1 overflow-hidden  text-ellipsis whitespace-nowrap  transition-transform duration-200 font-bold text-neutral-800 dark:text-slate-300 relative z-20">
+                                        {taskTitle}
+                                    </p>
+                                </div>
+
+                                <div className="my-3 flex flex-row items-center justify-between">
+                                    <div className="flex items-center">
+                                        <CalendarIcon className=" h-3 " />
+                                        <span className="text-gray-400 font-medium text-xs">
+                                            {format(new Date(), 'do MMMM')}
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-row items-center justify-end gap-0">
+                                        {assignees?.map(
+                                            ({ username, avatar }, index) => {
+                                                return (
+                                                    <Image
+                                                        key={index}
+                                                        src={avatar}
+                                                        alt={username}
+                                                        width={24}
+                                                        height={24}
+                                                        className="rounded-full even:ml-[-4px]"
+                                                        priority
+                                                    />
+                                                );
+                                            }
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    {/*Add a check if theree are  subtasks then onbly render this else don't  */}
+                                    <div className="flex items-center">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="1em"
+                                            height="1em"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <g
+                                                fill="none"
+                                                stroke="#7c3aed"
+                                                strokeWidth={2}
+                                            >
+                                                <rect
+                                                    width={4}
+                                                    height={4}
+                                                    x={18}
+                                                    y={9}
+                                                    rx={2}
+                                                    transform="rotate(90 18 9)"
+                                                ></rect>
+                                                <rect
+                                                    width={4}
+                                                    height={4}
+                                                    x={18}
+                                                    y={17}
+                                                    rx={2}
+                                                    transform="rotate(90 18 17)"
+                                                ></rect>
+                                                <rect
+                                                    width={4}
+                                                    height={4}
+                                                    x={3}
+                                                    y={7}
+                                                    rx={2}
+                                                    transform="rotate(-90 3 7)"
+                                                ></rect>
+                                                <path d="M5 8v7c0 1.886 0 2.828.586 3.414C6.172 19 7.114 19 9 19h5"></path>
+                                                <path d="M5 7c0 1.886 0 2.828.586 3.414C6.172 11 7.114 11 9 11h5"></path>
+                                            </g>
+                                        </svg>
+                                        <span className="text-xs font-medium text-slate-400">
+                                            {'1/4'}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        {labels &&
+                                            labels?.length >= 1 &&
+                                            (labels?.length === 1 ? (
+                                                <div className="flex flex-row items-center text-violet-500  ">
+                                                    <Tag className="h-3 scale-x-[-1]" />
+                                                    <span className="text-xs uppercase text-violet-500 font-medium">
+                                                        {labels[0]}
+                                                    </span>
+                                                </div>
+                                            ) : (
+                                                <div className="flex flex-row items-center  text-violet-500">
+                                                    <Tags className="h-3 scale-x-[-1]" />
+                                                    <span className="text-xs uppercase text-violet-500 font-medium">
+                                                        {`${labels[0]} +${labels?.length - 1}`}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                {labels &&
-                                    labels?.length >= 1 &&
-                                    (labels?.length === 1 ? (
-                                        <div className="flex flex-row items-center text-violet-500  ">
-                                            <Tag className="h-3 scale-x-[-1]" />
-                                            <span className="text-xs uppercase text-violet-500 font-medium">
-                                                {labels[0]}
-                                            </span>
-                                        </div>
-                                    ) : (
-                                        <div className="flex flex-row items-center  text-violet-500">
-                                            <Tags className="h-3 scale-x-[-1]" />
-                                            <span className="text-xs uppercase text-violet-500 font-medium">
-                                                {`${labels[0]} +${labels?.length - 1}`}
-                                            </span>
-                                        </div>
-                                    ))}
-                                {/* {labels?.map((tag: string, index: number) => ( */}
-                                {/*     <Badge key={index}>{tag}</Badge> */}
-                                {/* ))} */}
+                        </SheetTrigger>
+
+                        <SheetContent>
+                            <SheetHeader>
+                                <SheetTitle>Add Task</SheetTitle>
+                            </SheetHeader>
+
+                            <div className="flex flex-col gap-2">
+                                <div className="grid my-2 w-full gap-2">
+                                    <Label>Task Name</Label>
+                                    <Input
+                                        className="w-full"
+                                        type="text"
+                                        id="title"
+                                        placeholder="task name"
+                                    />
+                                </div>
+                                <div className="flex gap-2 justify-between items-center">
+                                    <Select>
+                                        <SelectTrigger className="w-[180px]">
+                                            <SelectValue placeholder="Priority" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectItem value="blueberry">
+                                                    P1
+                                                </SelectItem>
+                                                <SelectItem value="grapes">
+                                                    P2
+                                                </SelectItem>
+                                                <SelectItem value="pineapple">
+                                                    P3
+                                                </SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                    <DatePickerWithPresets />
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                            <div className="flex my-5 items-center w-full justify-center">
+                                <SheetClose asChild>
+                                    <Button type="submit">Add</Button>
+                                </SheetClose>
+                            </div>
+                        </SheetContent>
+                    </Sheet>
                 </div>
             </motion.div>
         );
