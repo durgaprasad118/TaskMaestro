@@ -1,5 +1,3 @@
-'use client';
-
 import * as React from 'react';
 import { addDays, format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
@@ -20,8 +18,13 @@ import {
     SelectValue
 } from '@/components/ui/select';
 
-export function DatePickerWithPresets() {
-    const [date, setDate] = React.useState<Date>();
+export function DatePickerWithPresets({
+    date,
+    setDate
+}: {
+    date: Date | undefined;
+    setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+}) {
     const [open, setOpen] = React.useState(false);
 
     const handleDateSelect = (selectedDate: Date | undefined) => {

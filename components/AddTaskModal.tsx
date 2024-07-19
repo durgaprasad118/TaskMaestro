@@ -21,11 +21,21 @@ import { Input } from './ui/input';
 import Subtasks from './ui/Sub-tasks';
 import { TagsInput } from './ui/TagsInput';
 
-export function AnimatedModalDemo() {
+export function AddTaskModal() {
     const [tags, setTags] = useState<string[]>([]);
     const [tasks, setTasks] = useState<string[]>([]);
+    const [date, setDate] = useState<Date>();
+    const [title, setTitle] = useState<string>('');
+    const [priority, setPriority] = useState<PriorityType>('P1');
+    function doclick() {
+        console.log(tags);
+        console.log(date);
+        console.log(title);
+        console.log(priority);
+        console.log(tasks);
+    }
     return (
-        <div className="py-40  bg-slate-950 flex items-center justify-center">
+        <div className="  bg-slate-950 flex items-center justify-center">
             <Modal>
                 <ModalTrigger className="bg-black dark:bg-white dark:text-black text-white flex justify-center group/modal-btn">
                     <span className="group-hover/modal-btn:translate-x-40 text-center px-4 transition duration-500">
@@ -42,13 +52,20 @@ export function AnimatedModalDemo() {
                                 <Label>Task Name</Label>
                                 <Input
                                     className="w-full"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
                                     type="text"
                                     id="title"
                                     placeholder="task name"
                                 />
                             </div>
                             <div className="z-1 flex gap-2 justify-between items-center">
-                                <Select>
+                                <Select
+                                    value={priority}
+                                    onValueChange={(value: PriorityType) =>
+                                        setPriority(value)
+                                    }
+                                >
                                     <SelectTrigger className="w-[180px]">
                                         <SelectValue
                                             placeholder="Priority"
@@ -57,28 +74,34 @@ export function AnimatedModalDemo() {
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
-                                            <SelectItem value="blueberry">
+                                            <SelectItem value="P1">
                                                 P1
                                             </SelectItem>
-                                            <SelectItem value="grapes">
+                                            <SelectItem value="P2">
                                                 P2
                                             </SelectItem>
-                                            <SelectItem value="pineapple">
+                                            <SelectItem value="P3">
                                                 P3
                                             </SelectItem>
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
-                                <DatePickerWithPresets />
+                                <DatePickerWithPresets
+                                    date={date}
+                                    setDate={setDate}
+                                />
                             </div>
                             <div className="">
                                 <TagsInput tags={tags} setTags={setTags} />
                             </div>
-                            <Subtasks tasks={tasks} />
+                            <Subtasks tasks={tasks} setTasks={setTasks} />
                         </div>
                     </ModalContent>
                     <ModalFooter className="gap-4 flex items-center justify-center">
-                        <button className="bg-black text-white dark:bg-white dark:text-black text-sm px-2 py-1 rounded-md border border-black w-28">
+                        <button
+                            onClick={doclick}
+                            className="bg-black text-white dark:bg-white dark:text-black text-sm px-2 py-1 rounded-md border border-black w-28"
+                        >
                             Add Task
                         </button>
                     </ModalFooter>
