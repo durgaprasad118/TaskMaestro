@@ -15,6 +15,7 @@ import {
 } from 'react-beautiful-dnd';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { KanbanList } from './ui/Kanban-list';
+import { AddTaskModal } from './AddTaskModal';
 
 const KanbanView = () => {
     const [kanbanData, setKanbanData] = useRecoilState(KanbanDataAtom);
@@ -97,6 +98,9 @@ const KanbanView = () => {
 
     return (
         <div>
+            <div className="my-3">
+                <AddTaskModal />
+            </div>
             <DragDropContext
                 onDragStart={onDragStart}
                 onDragUpdate={onDragUpdate}
