@@ -2,7 +2,7 @@ import { Plus } from 'lucide-react';
 import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { Input } from './input';
 import { Label } from './label';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 const Subtasks = ({
     tasks,
     setTasks
@@ -55,52 +55,60 @@ const Subtasks = ({
             <Label className="text-slate-400">Sub Tasks</Label>
             {tasks.length !== 0 && (
                 <div className="scrollable-m h-auto max-h-36 overflow-y-scroll custom-scrollbar">
-                    <div className="input-holder flex flex-col gap-2 py-1">
-                        {tasks.map((task, index) => (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{
-                                    opacity: 1,
-                                    y: 0
-                                }}
-                                exit={{
-                                    opacity: 0,
-                                    y: -10
-                                }}
-                                transition={{ type: 'tween', delay: 0.1 }}
-                                key={index}
-                                className="flex items-center gap-2 px-3"
-                            >
-                                <Input
-                                    ref={(el: HTMLInputElement | null) => {
-                                        inputRefs.current[index] = el;
+                    <AnimatePresence>
+                        <div className="input-holder flex flex-col gap-2 py-1">
+                            {tasks.map((task, index) => (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{
+                                        opacity: 1,
+                                        y: 0
                                     }}
-                                    placeholder="sub-task"
-                                    className="w-[90%]"
-                                    onKeyPress={(e) => handleKeyPress(e, index)}
-                                    value={task}
-                                    onChange={(e) =>
-                                        handleAddSubTask(index, e.target.value)
-                                    }
-                                />
-                                <motion.svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="2em"
-                                    height="2em"
-                                    viewBox="0 0 24 24"
-                                    onClick={() => removeTask(index)}
-                                    className="cursor-pointer "
-                                    whileHover={{ scale: 1.1 }}
-                                    whileTap={{ scale: 0.9 }}
+                                    exit={{
+                                        opacity: 0,
+                                        y: -10
+                                    }}
+                                    layout
+                                    transition={{ type: 'tween', delay: 0.1 }}
+                                    key={index}
+                                    className="flex items-center gap-2 px-3"
                                 >
-                                    <path
-                                        fill="#ef4444"
-                                        d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
-                                    ></path>
-                                </motion.svg>
-                            </motion.div>
-                        ))}
-                    </div>
+                                    <Input
+                                        ref={(el: HTMLInputElement | null) => {
+                                            inputRefs.current[index] = el;
+                                        }}
+                                        placeholder="sub-task"
+                                        className="w-[90%]"
+                                        onKeyPress={(e) =>
+                                            handleKeyPress(e, index)
+                                        }
+                                        value={task}
+                                        onChange={(e) =>
+                                            handleAddSubTask(
+                                                index,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                    <motion.svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="2em"
+                                        height="2em"
+                                        viewBox="0 0 24 24"
+                                        onClick={() => removeTask(index)}
+                                        className="cursor-pointer "
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.9 }}
+                                    >
+                                        <path
+                                            fill="#ef4444"
+                                            d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"
+                                        ></path>
+                                    </motion.svg>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </AnimatePresence>
                 </div>
             )}
             <motion.h2
