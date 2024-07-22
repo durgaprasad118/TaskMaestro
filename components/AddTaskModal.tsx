@@ -22,7 +22,7 @@ import { DatePickerWithPresets } from './ui/DataPicker';
 import { Input } from './ui/input';
 import Subtasks from './ui/Sub-tasks';
 import { TagsInput } from './ui/TagsInput';
-
+import { motion } from 'framer-motion';
 export function AddTaskModal() {
     const [tags, setTags] = useState<string[]>([]);
     const [tasks, setTasks] = useState<string[]>([]);
@@ -50,14 +50,28 @@ export function AddTaskModal() {
     return (
         <div className="bg-slate-950 flex items-center justify-center">
             <Modal>
-                <ModalTrigger className="bg-black dark:bg-white dark:text-black text-white flex justify-center group/modal-btn">
-                    <span className="group-hover/modal-btn:translate-x-40 text-center px-4 transition duration-500">
-                        Add a task{' '}
-                    </span>
-                    <div className="-translate-x-40 group-hover/modal-btn:translate-x-0 flex items-center justify-center absolute inset-0 transition duration-500 text-white z-20">
-                        ✅
-                    </div>
-                </ModalTrigger>
+                <motion.div
+                    initial={{
+                        y: 12,
+                        opacity: 0
+                    }}
+                    animate={{
+                        y: 0,
+                        opacity: 1
+                    }}
+                    transition={{
+                        type: 'spring'
+                    }}
+                >
+                    <ModalTrigger className="bg-black dark:bg-white dark:text-black text-white flex justify-center group/modal-btn">
+                        <span className="group-hover/modal-btn:translate-x-40 text-center px-4 transition duration-500">
+                            Add a task{' '}
+                        </span>
+                        <div className="-translate-x-40 group-hover/modal-btn:translate-x-0 flex items-center justify-center absolute inset-0 transition duration-500 text-white z-20">
+                            ✅
+                        </div>
+                    </ModalTrigger>
+                </motion.div>
                 <ModalBody>
                     <ModalContent>
                         <div className="flex flex-col gap-2">
@@ -113,7 +127,7 @@ export function AddTaskModal() {
                     <ModalFooter className="gap-4 flex items-center justify-center">
                         <button
                             onClick={doclick}
-                            className="bg-black text-white dark:bg-white dark:text-black text-sm px-2 py-1 rounded-md border border-black w-28"
+                            className=" dark:bg-slate-200 dark:text-black hover:bg-slate-100 hover:scale-105 transition-all duration-300 text-sm px-2 py-1 rounded-md border border-black w-28"
                         >
                             Add Task
                         </button>

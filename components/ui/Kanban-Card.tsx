@@ -227,7 +227,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
-                                    <DatePickerWithPresets />
+                                    {/* <DatePickerWithPresets date={} /> */}
                                 </div>
                             </div>
                             <div className="flex my-5 items-center w-full justify-center">
