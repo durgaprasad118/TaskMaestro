@@ -1,42 +1,12 @@
 'use client';
 import { cn } from '@/lib/utils';
+import { addModalAtom } from '@/store/atoms';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, {
-    ReactNode,
-    createContext,
-    useContext,
-    useEffect,
-    useRef,
-    useState
-} from 'react';
-
-interface ModalContextType {
-    open: boolean;
-    setOpen: (open: boolean) => void;
-}
-
-const ModalContext = createContext<ModalContextType | undefined>(undefined);
-
-export const ModalProvider = ({ children }: { children: ReactNode }) => {
-    const [open, setOpen] = useState(false);
-
-    return (
-        <ModalContext.Provider value={{ open, setOpen }}>
-            {children}
-        </ModalContext.Provider>
-    );
-};
-
-export const useModal = () => {
-    const context = useContext(ModalContext);
-    if (!context) {
-        throw new Error('useModal must be used within a ModalProvider');
-    }
-    return context;
-};
+import React, { ReactNode, useEffect, useRef } from 'react';
+import { useRecoilState } from 'recoil';
 
 export function Modal({ children }: { children: ReactNode }) {
-    return <ModalProvider>{children}</ModalProvider>;
+    return <div>{children}</div>;
 }
 
 export const ModalTrigger = ({
@@ -46,7 +16,7 @@ export const ModalTrigger = ({
     children: ReactNode;
     className?: string;
 }) => {
-    const { setOpen } = useModal();
+    const [open, setOpen] = useRecoilState(addModalAtom);
     return (
         <button
             className={cn(
@@ -67,9 +37,8 @@ export const ModalBody = ({
     children: ReactNode;
     className?: string;
 }) => {
-    const { open, setOpen } = useModal();
+    const [open, setOpen] = useRecoilState(addModalAtom);
     const modalRef = useRef<HTMLDivElement>(null);
-
     useEffect(() => {
         if (open) {
             document.body.style.overflow = 'hidden';
@@ -165,7 +134,7 @@ const Overlay = ({ className }: { className?: string }) => {
 };
 
 const CloseIcon = () => {
-    const { setOpen } = useModal();
+    const [open, setOpen] = useRecoilState(addModalAtom);
     return (
         <button
             onClick={() => setOpen(false)}

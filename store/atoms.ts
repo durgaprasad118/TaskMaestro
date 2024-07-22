@@ -45,4 +45,14 @@ const filteredKanbanDataSelector = selector<KanbanListType[]>({
     }
 });
 
-export { filteredKanbanDataSelector, KanbanDataAtom, SearchQueryAtom };
+//for add modal
+const addModalAtom = atom<Boolean>({
+    key: 'addModalAtom',
+    default: false
+});
+export {
+    addModalAtom,
+    filteredKanbanDataSelector,
+    KanbanDataAtom,
+    SearchQueryAtom
+};
