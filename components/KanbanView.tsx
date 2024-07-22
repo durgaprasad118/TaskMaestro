@@ -98,7 +98,7 @@ const KanbanView = () => {
 
     return (
         <div>
-            <div className="my-3">
+            <div className="my-2">
                 <AddTaskModal />
             </div>
             <DragDropContext

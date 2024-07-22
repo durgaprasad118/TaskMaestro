@@ -8,7 +8,7 @@ import {
     SelectValue
 } from '@/components/ui/select';
 import { Label } from '@radix-ui/react-dropdown-menu';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Modal,
     ModalBody,
@@ -20,6 +20,8 @@ import { DatePickerWithPresets } from './ui/DataPicker';
 import { Input } from './ui/input';
 import Subtasks from './ui/Sub-tasks';
 import { TagsInput } from './ui/TagsInput';
+import { useRecoilState } from 'recoil';
+import { addModalAtom } from '@/store/atoms';
 
 export function AddTaskModal() {
     const [tags, setTags] = useState<string[]>([]);
@@ -27,6 +29,7 @@ export function AddTaskModal() {
     const [date, setDate] = useState<Date>();
     const [title, setTitle] = useState<string>('');
     const [priority, setPriority] = useState<PriorityType>('P1');
+    const [open, setOpen] = useRecoilState(addModalAtom);
     function doclick() {
         console.log(tags);
         console.log(date);
@@ -34,8 +37,18 @@ export function AddTaskModal() {
         console.log(priority);
         console.log(tasks);
     }
+    useEffect(() => {
+        if (!open) {
+            setTags([]);
+            setTasks([]);
+            setDate(undefined);
+            setTitle('');
+            setPriority('P1');
+        }
+    }, [open]);
+
     return (
-        <div className="  bg-slate-950 flex items-center justify-center">
+        <div className="bg-slate-950 flex items-center justify-center">
             <Modal>
                 <ModalTrigger className="bg-black dark:bg-white dark:text-black text-white flex justify-center group/modal-btn">
                     <span className="group-hover/modal-btn:translate-x-40 text-center px-4 transition duration-500">
