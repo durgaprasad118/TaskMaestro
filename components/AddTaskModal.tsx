@@ -26,7 +26,7 @@ import { motion } from 'framer-motion';
 export function AddTaskModal() {
     const [tags, setTags] = useState<string[]>([]);
     const [tasks, setTasks] = useState<string[]>([]);
-    const [date, setDate] = useState<Date>();
+    const [date, setDate] = useState<Date | undefined>();
     const [title, setTitle] = useState<string>('');
     const [priority, setPriority] = useState<PriorityType>('P1');
     const [open, setOpen] = useRecoilState(addModalAtom);

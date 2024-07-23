@@ -16,7 +16,6 @@ import {
     SelectValue
 } from '@/components/ui/select';
 import { DatePickerWithPresets } from './DataPicker';
-import { Button } from './button';
 import { Input } from './input';
 import { Label } from './label';
 import {
@@ -27,8 +26,8 @@ import {
     SheetTitle,
     SheetTrigger
 } from './sheet';
-import { TagsInput } from './TagsInput';
 import Subtasks from './Sub-tasks';
+import { TagsInput } from './TagsInput';
 declare type PriorityNameType = 'P1' | 'P2' | 'P3';
 export const BageForPriority: Record<PriorityNameType, string> = {
     P1: 'red',
@@ -55,11 +54,11 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
         },
         ref
     ) => {
-        const [tags, setTags] = useState<string[]>([]);
+        const [tags, setTags] = useState<string[]>(labels ?? []);
         const [tasks, setTasks] = useState<string[]>([]);
         const [date, setDate] = useState<Date>();
-        const [title, setTitle] = useState<string>('');
-        const [prior, setPriority] = useState<PriorityType>('P1');
+        const [title, setTitle] = useState<string>(taskTitle);
+        const [prior, setPriority] = useState<PriorityType>(priority);
         function doclick() {
             console.log(tags);
             console.log(date);
@@ -217,6 +216,10 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                     <Input
                                         className="w-full"
                                         type="text"
+                                        value={title}
+                                        onChange={(e) =>
+                                            setTitle(e.target.value)
+                                        }
                                         id="title"
                                         placeholder="task name"
                                     />
@@ -230,7 +233,10 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                             ) => setPriority(value)}
                                         >
                                             <SelectTrigger className="w-[180px]">
-                                                <SelectValue placeholder="Priority" />
+                                                <SelectValue
+                                                    placeholder="Priority"
+                                                    className="text-slate-500"
+                                                />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectGroup>
