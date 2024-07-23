@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 import { Calendar as CalendarIcon, Tag, Tags } from 'lucide-react';
 import Image from 'next/image';
-import React, { forwardRef, useId } from 'react';
+import React, { forwardRef, useId, useState } from 'react';
 import { Badge } from './Badge';
 import { Checkbox } from './checkbox';
 
@@ -27,6 +27,8 @@ import {
     SheetTitle,
     SheetTrigger
 } from './sheet';
+import { TagsInput } from './TagsInput';
+import Subtasks from './Sub-tasks';
 declare type PriorityNameType = 'P1' | 'P2' | 'P3';
 export const BageForPriority: Record<PriorityNameType, string> = {
     P1: 'red',
@@ -53,6 +55,18 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
         },
         ref
     ) => {
+        const [tags, setTags] = useState<string[]>([]);
+        const [tasks, setTasks] = useState<string[]>([]);
+        const [date, setDate] = useState<Date>();
+        const [title, setTitle] = useState<string>('');
+        const [prior, setPriority] = useState<PriorityType>('P1');
+        function doclick() {
+            console.log(tags);
+            console.log(date);
+            console.log(title);
+            console.log(prior);
+            console.log(tasks);
+        }
         let id = `${taskTitle.replaceAll(' ', '-')}-${ticketID}`;
         return (
             <motion.div
@@ -195,10 +209,9 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
 
                         <SheetContent>
                             <SheetHeader>
-                                <SheetTitle>Add Task</SheetTitle>
+                                <SheetTitle>Update Task</SheetTitle>
                             </SheetHeader>
-
-                            <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-2 mt-2">
                                 <div className="grid my-2 w-full gap-2">
                                     <Label>Task Name</Label>
                                     <Input
@@ -208,31 +221,57 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                         placeholder="task name"
                                     />
                                 </div>
-                                <div className="flex gap-2 justify-between items-center">
-                                    <Select>
-                                        <SelectTrigger className="w-[180px]">
-                                            <SelectValue placeholder="Priority" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                <SelectItem value="blueberry">
-                                                    P1
-                                                </SelectItem>
-                                                <SelectItem value="grapes">
-                                                    P2
-                                                </SelectItem>
-                                                <SelectItem value="pineapple">
-                                                    P3
-                                                </SelectItem>
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
-                                    {/* <DatePickerWithPresets date={} /> */}
+                                <div className="flex gap-2 flex-col">
+                                    <div className="flex gap-2">
+                                        <Select
+                                            value={prior}
+                                            onValueChange={(
+                                                value: PriorityType
+                                            ) => setPriority(value)}
+                                        >
+                                            <SelectTrigger className="w-[180px]">
+                                                <SelectValue placeholder="Priority" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value="blueberry">
+                                                        P1
+                                                    </SelectItem>
+                                                    <SelectItem value="grapes">
+                                                        P2
+                                                    </SelectItem>
+                                                    <SelectItem value="pineapple">
+                                                        P3
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+
+                                        <DatePickerWithPresets
+                                            date={date}
+                                            setDate={setDate}
+                                        />
+                                    </div>
+                                    <div className="">
+                                        <TagsInput
+                                            tags={tags}
+                                            setTags={setTags}
+                                        />
+                                    </div>
+                                    <Subtasks
+                                        tasks={tasks}
+                                        setTasks={setTasks}
+                                    />
                                 </div>
                             </div>
                             <div className="flex my-5 items-center w-full justify-center">
                                 <SheetClose asChild>
-                                    <Button type="submit">Add</Button>
+                                    <button
+                                        onClick={doclick}
+                                        className=" dark:bg-slate-200 dark:text-black hover:bg-slate-100 hover:scale-105 transition-all duration-300 text-sm px-2 py-1 rounded-md border border-black w-28"
+                                    >
+                                        Add Task
+                                    </button>
                                 </SheetClose>
                             </div>
                         </SheetContent>
