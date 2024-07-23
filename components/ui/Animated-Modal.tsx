@@ -48,7 +48,7 @@ export const ModalBody = ({
     }, [open]);
 
     useOutsideClick(modalRef, () => setOpen(false));
-
+    useEscapeKey(() => setOpen(false));
     return (
         <AnimatePresence>
             {open && (
@@ -186,4 +186,18 @@ export const useOutsideClick = (
             document.removeEventListener('touchstart', listener);
         };
     }, [ref, callback]);
+};
+
+const useEscapeKey = (handler: () => void) => {
+    useEffect(() => {
+        const handleEscKey = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                handler();
+            }
+        };
+        document.addEventListener('keyup', handleEscKey);
+        return () => {
+            document.removeEventListener('keyup', handleEscKey);
+        };
+    }, [handler]);
 };
