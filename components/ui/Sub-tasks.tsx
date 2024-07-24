@@ -3,12 +3,18 @@ import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { Input } from './input';
 import { Label } from './label';
 import { AnimatePresence, motion } from 'framer-motion';
+
+export interface TaskProps {
+    completed: boolean;
+    title: string;
+}
+
 const Subtasks = ({
     tasks,
     setTasks
 }: {
-    tasks: string[];
-    setTasks: Dispatch<SetStateAction<string[]>>;
+    tasks: TaskProps[];
+    setTasks: Dispatch<SetStateAction<TaskProps[]>>;
 }) => {
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -17,19 +23,19 @@ const Subtasks = ({
     }, [tasks]);
 
     function handleAddTask() {
-        setTasks((prev) => [...prev, '']);
+        setTasks((prev) => [...prev, { completed: false, title: '' }]);
     }
 
     function handleAddSubTask(index: number, title: string) {
         setTasks((prev) => {
             const newTasks = [...prev];
-            newTasks[index] = title;
+            newTasks[index] = { ...newTasks[index], title };
             return newTasks;
         });
     }
 
     function removeTask(index: number) {
-        const filteredTasks = tasks.filter((x, i) => i !== index);
+        const filteredTasks = tasks.filter((_, i) => i !== index);
         setTasks(filteredTasks);
     }
 
@@ -60,21 +66,15 @@ const Subtasks = ({
                             {tasks.map((task, index) => (
                                 <motion.div
                                     initial={{ opacity: 0, y: 10 }}
-                                    animate={{
-                                        opacity: 1,
-                                        y: 0
-                                    }}
-                                    exit={{
-                                        opacity: 0,
-                                        y: -10
-                                    }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
                                     layout
                                     transition={{ type: 'tween', delay: 0.1 }}
                                     key={index}
                                     className="flex items-center gap-2 px-3"
                                 >
                                     <Input
-                                        ref={(el: HTMLInputElement | null) => {
+                                        ref={(el) => {
                                             inputRefs.current[index] = el;
                                         }}
                                         placeholder="sub-task"
@@ -82,7 +82,7 @@ const Subtasks = ({
                                         onKeyPress={(e) =>
                                             handleKeyPress(e, index)
                                         }
-                                        value={task}
+                                        value={task.title}
                                         onChange={(e) =>
                                             handleAddSubTask(
                                                 index,
@@ -96,7 +96,7 @@ const Subtasks = ({
                                         height="2em"
                                         viewBox="0 0 24 24"
                                         onClick={() => removeTask(index)}
-                                        className="cursor-pointer "
+                                        className="cursor-pointer"
                                         whileHover={{ scale: 1.1 }}
                                         whileTap={{ scale: 0.9 }}
                                     >

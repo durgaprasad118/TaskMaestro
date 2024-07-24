@@ -3,22 +3,9 @@ import { getServerSession } from 'next-auth';
 import { NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {
-    const {
-        title,
-        date,
-        labels,
-        subTasks,
-        priority
-    }: {
-        title: string;
-        date: Date;
-        labels: string[];
-        priority: PriorityType;
-        subTasks: any;
-    } = await req.json();
+    const { title, date, labels, subTasks, priority } = await req.json();
     const session = await getServerSession();
     const userEmail = session?.user?.email;
-
     if (userEmail) {
         const user = await db.user.findFirst({
             where: {
@@ -32,7 +19,7 @@ export async function POST(req: NextRequest) {
                         title,
                         date,
                         priority,
-                        subTasks,
+                        subTasks: subTasks,
                         labels,
                         userId: user.id
                     }

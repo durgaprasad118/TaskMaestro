@@ -23,20 +23,47 @@ import { Input } from './ui/input';
 import Subtasks from './ui/Sub-tasks';
 import { TagsInput } from './ui/TagsInput';
 import { motion } from 'framer-motion';
+import axios from 'axios';
+import { toast } from './ui/use-toast';
+import { TaskProps } from './ui/Sub-tasks';
 export function AddTaskModal() {
     const [tags, setTags] = useState<string[]>([]);
-    const [tasks, setTasks] = useState<string[]>([]);
+    const [tasks, setTasks] = useState<TaskProps[]>([]);
     const [date, setDate] = useState<Date | undefined>();
     const [title, setTitle] = useState<string>('');
     const [priority, setPriority] = useState<PriorityType>('P1');
     const [open, setOpen] = useRecoilState(addModalAtom);
-    function doclick() {
-        console.log(tags);
-        console.log(date);
-        console.log(title);
-        console.log(priority);
-        console.log(tasks);
-    }
+    console.log(tasks);
+    const addTodos = async () => {
+        try {
+            const { data } = await axios.post(
+                process.env.NEXT_PUBLIC_BASE_URL + '/addTodo' || '',
+                {
+                    title: title,
+                    date: date,
+                    priority: priority,
+                    subTasks: [...tasks],
+                    labels: [...tags]
+                }
+            );
+            console.log(data);
+            if (data.task) {
+                console.log('Task created:', data.task);
+                toast(data.message || 'Task added successfully');
+                // setOpen(false); // Close the modal
+                setTitle('');
+                setDate(undefined);
+                setPriority('P1');
+                setTasks([]);
+                setTags([]);
+            } else if (data.error) {
+                toast(data.error);
+            }
+            toast(data?.message || '');
+        } catch (error) {
+            console.log(error);
+        }
+    };
     useEffect(() => {
         if (!open) {
             setTags([]);
@@ -126,7 +153,7 @@ export function AddTaskModal() {
                     </ModalContent>
                     <ModalFooter className="gap-4 flex items-center justify-center">
                         <button
-                            onClick={doclick}
+                            onClick={addTodos}
                             className=" dark:bg-slate-200 dark:text-black hover:bg-slate-100 hover:scale-105 transition-all duration-300 text-sm px-2 py-1 rounded-md border border-black w-28"
                         >
                             Add Task
