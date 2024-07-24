@@ -44,9 +44,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model VerificationToken {
@@ -58,10 +57,10 @@ model VerificationToken {
 }
 
 model Task {
-  taskId    String    @id @default(cuid())
+  id        String    @id @default(cuid())
   title     String
   userId    String
-  user      User      @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   date      DateTime
   labels    String[]
   subTasks  SubTask[]
@@ -77,9 +76,11 @@ enum Priority {
 }
 
 model SubTask {
-  subId     String  @id @default(cuid())
+  id        Int      @id @default(autoincrement())
   title     String
-  completed Boolean
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Task      Task     @relation(fields: [taskId], references: [id])
   taskId    String
-  task      Task    @relation(fields: [subId], references: [taskId], onDelete: Cascade)
 }
