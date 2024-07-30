@@ -19,9 +19,19 @@ export async function POST(req: NextRequest) {
                         title,
                         date,
                         priority,
-                        subTasks: subTasks,
                         labels,
-                        userId: user.id
+                        userId: user.id,
+                        subTasks: {
+                            create: subTasks.map(
+                                (task: {
+                                    title: string;
+                                    completed: boolean;
+                                }) => ({
+                                    title: task.title,
+                                    completed: task.completed
+                                })
+                            )
+                        }
                     }
                 });
                 if (newTask) {
