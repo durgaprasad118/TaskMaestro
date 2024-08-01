@@ -4,8 +4,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Providers, { RecoilRootProvider, ThemeProvider } from './providers';
 const inter = Inter({ subsets: ['latin'] });
-
-import { Toaster } from '@/components/ui/toaster';
+import {Toaster} from "sonner"
 export const metadata: Metadata = {
     title: 'Task Maestro',
     description: 'Ultimate task manager'
@@ -24,7 +23,15 @@ export default function RootLayout({
                         <Providers>
                             <Appbar />
                             {children}
-                            <Toaster />
+                            <Toaster
+                                toastOptions={{
+                                    className: 'py-3'
+                                }}
+                                expand={true}
+                                position="top-right"
+                                richColors
+                                closeButton
+                            />
                         </Providers>
                     </ThemeProvider>
                 </RecoilRootProvider>
