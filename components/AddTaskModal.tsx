@@ -24,8 +24,8 @@ import Subtasks from './ui/Sub-tasks';
 import { TagsInput } from './ui/TagsInput';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import { toast } from './ui/use-toast';
 import { TaskProps } from './ui/Sub-tasks';
+import { toast } from 'sonner';
 export function AddTaskModal() {
     const [tags, setTags] = useState<string[]>([]);
     const [tasks, setTasks] = useState<TaskProps[]>([]);
@@ -46,20 +46,18 @@ export function AddTaskModal() {
                     labels: [...tags]
                 }
             );
-            console.log(data);
             if (data.task) {
-                console.log('Task created:', data.task);
-                toast(data.message || 'Task added successfully');
-                // setOpen(false); // Close the modal
+                console.log(data);
+                toast.success(data?.message);
+                setOpen(false);
                 setTitle('');
                 setDate(undefined);
                 setPriority('P1');
                 setTasks([]);
                 setTags([]);
             } else if (data.error) {
-                toast(data.error);
+                toast.error(data.error.message ?? 'Failed to create task');
             }
-            toast(data?.message || '');
         } catch (error) {
             console.log(error);
         }

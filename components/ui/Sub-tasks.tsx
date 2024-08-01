@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { Input } from './input';
 import { Label } from './label';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Checkbox } from './checkbox';
 
 export interface TaskProps {
     completed: boolean;
@@ -38,7 +39,13 @@ const Subtasks = ({
         const filteredTasks = tasks.filter((_, i) => i !== index);
         setTasks(filteredTasks);
     }
-
+    function handleCheck(index: number, checked: boolean) {
+        setTasks((prev) => {
+            const newTasks = [...prev];
+            newTasks[index] = { ...newTasks[index], completed: checked };
+            return newTasks;
+        });
+    }
     function handleKeyPress(
         e: React.KeyboardEvent<HTMLInputElement>,
         index: number
@@ -73,6 +80,14 @@ const Subtasks = ({
                                     key={index}
                                     className="flex items-center gap-2 px-3"
                                 >
+                                    <Checkbox
+                                        className="h-5 w-5 border-slate-700 "
+                                        checked={task.completed}
+                                        onClick={
+                                           ()=>        handleCheck(index, !task.completed)
+                                        }
+                                    />
+
                                     <Input
                                         ref={(el) => {
                                             inputRefs.current[index] = el;
