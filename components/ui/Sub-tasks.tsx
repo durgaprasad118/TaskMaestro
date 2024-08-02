@@ -5,11 +5,6 @@ import { Label } from './label';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Checkbox } from './checkbox';
 
-export interface TaskProps {
-    completed: boolean;
-    title: string;
-}
-
 const Subtasks = ({
     tasks,
     setTasks
@@ -83,8 +78,8 @@ const Subtasks = ({
                                     <Checkbox
                                         className="h-5 w-5 border-slate-700 "
                                         checked={task.completed}
-                                        onClick={
-                                           ()=>        handleCheck(index, !task.completed)
+                                        onClick={() =>
+                                            handleCheck(index, !task.completed)
                                         }
                                     />
 
