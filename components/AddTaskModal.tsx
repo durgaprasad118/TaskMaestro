@@ -32,7 +32,6 @@ export function AddTaskModal() {
     const [title, setTitle] = useState<string>('');
     const [priority, setPriority] = useState<PriorityType>('P1');
     const [open, setOpen] = useRecoilState(addModalAtom);
-    console.log(tasks);
     const addTodos = async () => {
         try {
             const { data } = await axios.post(
@@ -46,7 +45,6 @@ export function AddTaskModal() {
                 }
             );
             if (data.task) {
-                console.log(data);
                 toast.success(data?.message);
                 setOpen(false);
                 setTitle('');

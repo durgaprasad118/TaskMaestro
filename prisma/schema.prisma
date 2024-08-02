@@ -65,8 +65,16 @@ model Task {
   labels    String[]
   subTasks  SubTask[]
   priority  Priority
+  status    Status    @default(Todo)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+enum Status {
+  Backlog
+  Progress
+  Todo
+  Done
 }
 
 enum Priority {
