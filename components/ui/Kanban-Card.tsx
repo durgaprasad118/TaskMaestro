@@ -2,8 +2,7 @@
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 import { Calendar as CalendarIcon, Tag, Tags } from 'lucide-react';
-import Image from 'next/image';
-import React, { forwardRef, useId, useState } from 'react';
+import { forwardRef, useId, useState } from 'react';
 import { Badge } from './Badge';
 import { Checkbox } from './checkbox';
 
@@ -28,45 +27,77 @@ import {
 } from './sheet';
 import Subtasks from './Sub-tasks';
 import { TagsInput } from './TagsInput';
+import axios from 'axios';
+import { toast } from 'sonner';
+import { useRecoilRefresher_UNSTABLE } from 'recoil';
+import { KanbanDataAtom } from '@/store';
 declare type PriorityNameType = 'P1' | 'P2' | 'P3';
 export const BageForPriority: Record<PriorityNameType, string> = {
     P1: 'red',
     P2: 'yellow',
     P3: 'green'
 };
-export interface KanbanCardProps
-    extends React.HTMLAttributes<HTMLDivElement>,
-        KanbanCardType {
+export interface KanbanCardProps extends KanbanCardType {
     index: number;
+    className: string;
+    status: string;
 }
 
+// eslint-disable-next-line react/display-name
 export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
     (
         {
             className,
-            taskTitle,
+            title: taskTitle,
             priority,
-            ticketID,
+            id: taskID,
+            subTasks,
+            date: taskDate,
             labels,
-            assignees,
             index,
+            status,
             ...args
         },
         ref
     ) => {
         const [tags, setTags] = useState<string[]>(labels ?? []);
-        const [tasks, setTasks] = useState<string[]>([]);
-        const [date, setDate] = useState<Date>();
-        const [title, setTitle] = useState<string>(taskTitle);
+        const [tasks, setTasks] = useState<TaskProps[]>(subTasks);
+        const [date, setDate] = useState<Date | undefined>(new Date(taskDate));
+        const [title, setTitle] = useState<string>(taskTitle || ' ');
         const [prior, setPriority] = useState<PriorityType>(priority);
-        function doclick() {
-            console.log(tags);
-            console.log(date);
-            console.log(title);
-            console.log(prior);
-            console.log(tasks);
-        }
-        let id = `${taskTitle.replaceAll(' ', '-')}-${ticketID}`;
+        const refresh = useRecoilRefresher_UNSTABLE(KanbanDataAtom);
+        let taskcount = tasks.length;
+        let doneTasks = tasks.filter((x) => x.completed).length;
+        const UpdateTask = async () => {
+            try {
+                const { data } = await axios.put(
+                    process.env.NEXT_PUBLIC_BASE_URL + '/updatetask' || '',
+                    {
+                        title: title,
+                        date: date,
+                        priority: priority,
+                        subTasks: [...tasks],
+                        labels: [...tags],
+                        status: status,
+                        taskId: taskID
+                    }
+                );
+                if (data.task) {
+                    refresh();
+                    toast.success(data?.message);
+                    setTitle('');
+                    setDate(undefined);
+                    setPriority('P1');
+                    setTasks([]);
+                    setTags([]);
+                } else if (data.error) {
+                    toast.error(data.error.message ?? 'Failed to update task');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        let id = `${taskID}-${taskDate}`;
         return (
             <motion.div
                 initial={{
@@ -108,7 +139,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                         id={id}
                                     />
                                     <p className="group-hover:translate-x-1 overflow-hidden  text-ellipsis whitespace-nowrap  transition-transform duration-200 font-bold text-neutral-800 dark:text-slate-300 relative z-20">
-                                        {taskTitle}
+                                        {title}
                                     </p>
                                 </div>
 
@@ -116,25 +147,11 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                     <div className="flex items-center">
                                         <CalendarIcon className=" h-3 " />
                                         <span className="text-gray-400 font-medium text-xs">
-                                            {format(new Date(), 'do MMMM')}
+                                            {format(
+                                                date || new Date(),
+                                                'do MMMM'
+                                            )}
                                         </span>
-                                    </div>
-                                    <div className="flex flex-row items-center justify-end gap-0">
-                                        {assignees?.map(
-                                            ({ username, avatar }, index) => {
-                                                return (
-                                                    <Image
-                                                        key={index}
-                                                        src={avatar}
-                                                        alt={username}
-                                                        width={24}
-                                                        height={24}
-                                                        className="rounded-full even:ml-[-4px]"
-                                                        priority
-                                                    />
-                                                );
-                                            }
-                                        )}
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-between">
@@ -180,7 +197,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                             </g>
                                         </svg>
                                         <span className="text-xs font-medium text-slate-400">
-                                            {'1/4'}
+                                            {doneTasks + '/' + taskcount}
                                         </span>
                                     </div>
                                     <div>
@@ -240,13 +257,13 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectGroup>
-                                                    <SelectItem value="blueberry">
+                                                    <SelectItem value="P1">
                                                         P1
                                                     </SelectItem>
-                                                    <SelectItem value="grapes">
+                                                    <SelectItem value="P2">
                                                         P2
                                                     </SelectItem>
-                                                    <SelectItem value="pineapple">
+                                                    <SelectItem value="P3">
                                                         P3
                                                     </SelectItem>
                                                 </SelectGroup>
@@ -273,10 +290,10 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                             <div className="flex my-5 items-center w-full justify-center">
                                 <SheetClose asChild>
                                     <button
-                                        onClick={doclick}
+                                        onClick={UpdateTask}
                                         className=" dark:bg-slate-200 dark:text-black hover:bg-slate-100 hover:scale-105 transition-all duration-300 text-sm px-2 py-1 rounded-md border border-black w-28"
                                     >
-                                        Add Task
+                                        Update Task
                                     </button>
                                 </SheetClose>
                             </div>

@@ -11,7 +11,7 @@ export interface KanbanListProps
 }
 
 export const KanbanList = forwardRef<HTMLDivElement, KanbanListProps>(
-    ({ className, listItems = [], listName, index, ...args }, ref) => {
+    ({ className, listItems = [], status, index, ...args }, ref) => {
         const [enabled, setEnabled] = useState(false);
         useEffect(() => {
             const animation = requestAnimationFrame(() => setEnabled(true));
@@ -29,10 +29,10 @@ export const KanbanList = forwardRef<HTMLDivElement, KanbanListProps>(
             <div>
                 <div className="kanban-list-details-wrapper  px-2 mb-2">
                     <p className="leading-snug font-medium tracking-tight text-center text-gray-400 text-sm">
-                        {listName}
+                        {status}
                     </p>
                 </div>
-                <Droppable droppableId={listName} key={listName}>
+                <Droppable droppableId={status} key={status}>
                     {(provided, snapshot) => (
                         <div
                             ref={provided.innerRef}
@@ -48,8 +48,8 @@ export const KanbanList = forwardRef<HTMLDivElement, KanbanListProps>(
                                     (card: KanbanCardType, index: number) => {
                                         return (
                                             <Draggable
-                                                key={`${card.taskTitle.replaceAll(' ', '-')}-${card.ticketID}`}
-                                                draggableId={`${card.taskTitle.replaceAll(' ', '-')}-${card.ticketID}`}
+                                                key={`${card?.id}-${card?.date}`}
+                                                draggableId={`${card?.id}-${card?.date}`}
                                                 index={index}
                                             >
                                                 {(provided, snapshot) => (
@@ -59,9 +59,11 @@ export const KanbanList = forwardRef<HTMLDivElement, KanbanListProps>(
                                                         {...provided.dragHandleProps}
                                                     >
                                                         <KanbanCard
+                                                            className=""
                                                             key={index}
                                                             {...card}
                                                             index={index}
+                                                            status={status}
                                                         />
                                                     </div>
                                                 )}

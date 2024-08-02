@@ -1,12 +1,12 @@
 'use client';
-
 import { ResponsiveControl } from '@/layouts/responsive-control';
 import {
     filteredKanbanDataSelector,
     KanbanDataAtom,
     SearchQueryAtom
 } from '@/store';
-import { useCallback, useState } from 'react';
+import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
 import {
     DragDropContext,
     DragStart,
@@ -14,8 +14,8 @@ import {
     DropResult
 } from 'react-beautiful-dnd';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { KanbanList } from './ui/Kanban-list';
 import { AddTaskModal } from './AddTaskModal';
+import { KanbanList } from './ui/Kanban-list';
 
 const KanbanView = () => {
     const [kanbanData, setKanbanData] = useRecoilState(KanbanDataAtom);
@@ -25,12 +25,46 @@ const KanbanView = () => {
     const [draggedOverIndex, setDraggedOverIndex] = useState<number | null>(
         null
     );
+    const fetchData = async () => {
+        try {
+            const { data } = await axios.get(
+                process.env.NEXT_PUBLIC_BASE_URL + '/gettasks' || ''
+            );
+            let tasks = data?.tasks?.tasks;
+            let updatedTasks = kanbanData.map((list) => ({
+                ...list,
+                listItems: [...list.listItems]
+            }));
+            console.log(tasks.length);
+            console.log(updatedTasks);
+            for (let i = 0; i < tasks.length; i++) {
+                if (tasks[i].status == 'Backlog') {
+                    updatedTasks[0].listItems.push(tasks[i]);
+                }
+                if (tasks[i].status == 'Progress') {
+                    updatedTasks[1].listItems.push(tasks[i]);
+                }
 
+                if (tasks[i].status == 'Todo') {
+                    updatedTasks[2].listItems.push(tasks[i]);
+                }
+                if (tasks[i].status == 'Done') {
+                    updatedTasks[3].listItems.push(tasks[i]);
+                }
+            }
+            setKanbanData(updatedTasks);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+        fetchData();
+    }, []);
     const onDragStart = useCallback(
         (initial: DragStart): void => {
             const { source } = initial;
             const sourceList = kanbanData.find(
-                (list) => list.listName === source.droppableId
+                (list) => list.status === source.droppableId
             );
             const draggedTask = sourceList?.listItems[source.index];
             setDraggedItem(draggedTask || null);
@@ -49,7 +83,6 @@ const KanbanView = () => {
             setDraggedItem(null);
             setDraggedOverIndex(null);
 
-            // Dropped outside the list
             if (!result.destination) {
                 return;
             }
@@ -58,10 +91,10 @@ const KanbanView = () => {
 
             // Find the source and destination lists
             const sourceListIndex = kanbanData.findIndex(
-                (list) => list.listName === source.droppableId
+                (list) => list.status === source.droppableId
             );
             const destinationListIndex = kanbanData.findIndex(
-                (list) => list.listName === destination.droppableId
+                (list) => list.status === destination.droppableId
             );
 
             // Create a copy of the kanbanData array
@@ -110,7 +143,7 @@ const KanbanView = () => {
                     {filteredKanbanData.map(
                         (list: KanbanListType, index: number) => (
                             <KanbanList
-                                key={list.listName}
+                                key={list.status}
                                 index={index}
                                 {...list}
                             />
