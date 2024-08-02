@@ -24,7 +24,6 @@ import Subtasks from './ui/Sub-tasks';
 import { TagsInput } from './ui/TagsInput';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import { TaskProps } from './ui/Sub-tasks';
 import { toast } from 'sonner';
 export function AddTaskModal() {
     const [tags, setTags] = useState<string[]>([]);
