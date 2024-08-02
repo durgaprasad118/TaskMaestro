@@ -1,14 +1,21 @@
 declare type KanbanCardType = {
     priority: PriorityType;
-    taskTitle: string;
-    ticketID: number;
-    assignees?: AssigneeType[];
+    title: string;
+    id: string;
+    date: Date;
     labels?: string[];
+    Status?: Status;
+    subTasks: TaskProps[];
 };
 
 declare type PriorityType = 'P1' | 'P2' | 'P3';
 
+declare type TaskProps = {
+    completed: boolean;
+    title: string;
+};
+declare type Status = 'Backlog' | 'Progress' | 'Todo' | 'Done';
 declare type KanbanListType = {
-    listName: string;
+    status: string;
     listItems: KanbanCardType[];
 };

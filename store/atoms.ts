@@ -8,6 +8,7 @@ const SearchQueryAtom = atom<string>({
     key: 'SearchQueryAtom',
     default: ''
 });
+
 const filteredKanbanDataSelector = selector<KanbanListType[]>({
     key: 'filteredKanbanDataSelector',
     get: ({ get }) => {
@@ -17,16 +18,9 @@ const filteredKanbanDataSelector = selector<KanbanListType[]>({
         return kanbanData.map((list) => ({
             ...list,
             listItems: list.listItems.filter((task) => {
-                const isTitleMatch = task.taskTitle
+                const isTitleMatch = task.title
                     .toLowerCase()
                     .includes(searchQuery.toLowerCase());
-                const isAssigneeMatch =
-                    task.assignees &&
-                    task?.assignees.some((assignee) =>
-                        assignee.username
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase())
-                    );
                 const isTagMatch = task.labels?.some((tag) =>
                     tag.toLowerCase().includes(searchQuery.toLowerCase())
                 );
@@ -34,18 +28,13 @@ const filteredKanbanDataSelector = selector<KanbanListType[]>({
                     .toLowerCase()
                     .includes(searchQuery.toLowerCase());
 
-                return (
-                    isTitleMatch ||
-                    isAssigneeMatch ||
-                    isTagMatch ||
-                    isTeamNameMatch
-                );
+                return isTitleMatch || isTagMatch || isTeamNameMatch;
             })
         }));
     }
 });
 
-//for add modal
+//for add modal closing and opening
 const addModalAtom = atom<Boolean>({
     key: 'addModalAtom',
     default: false

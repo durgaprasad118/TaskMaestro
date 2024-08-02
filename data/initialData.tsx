@@ -1,197 +1,53 @@
 export const INITIAL_KANBAN_DATA: KanbanListType[] = [
     {
-        listName: 'Not Started',
+        status: 'Backlog',
         listItems: [
             {
                 priority: 'P1',
-                taskTitle: 'Inbox DesignInbox DesignInbox Design',
-                ticketID: 1,
+                title: 'Inbox DesignInbox DesignInbox Design',
+                id: 'a',
                 labels: ['design', 'blocker'],
-                assignees: [
-                    {
-                        username: 'Dp',
-                        avatar: 'https://github.com/durgaprasad118.png'
-                    }
-                ]
-            },
-            {
-                priority: 'P2',
-                taskTitle: 'Inbox Infrastructure',
-                ticketID: 2,
-                labels: ['backend'],
-                assignees: [
-                    {
-                        username: 'Dp',
-                        avatar: 'https://github.com/durgaprasad118.png'
-                    },
-                    {
-                        username: 'kartik',
-
-                        avatar: 'https://github.com/kartikver15gr8.png'
-                    }
-                ]
-            },
-            {
-                priority: 'P3',
-                ticketID: 8,
-                taskTitle: 'Build Conversation Module',
-                labels: ['frontend', 'data'],
-                assignees: []
+                date: new Date('2024-07-08T18:30:00.000Z'),
+                subTasks: []
             }
         ]
     },
     {
-        listName: 'In Progress',
+        status: 'Progress',
         listItems: [
             {
                 priority: 'P2',
-                taskTitle: "Setup co-pilot API's",
-                ticketID: 3,
+                title: "Setup co-pilot API's",
+                id: 'b',
                 labels: ['backend', 'API'],
-                assignees: [
-                    {
-                        username: 'kartik',
-
-                        avatar: 'https://github.com/kartikver15gr8.png'
-                    }
-                ]
-            },
-            {
-                priority: 'P2',
-                taskTitle: 'Setup redux structure',
-                ticketID: 10,
-                assignees: [
-                    {
-                        username: 'Dp',
-
-                        avatar: 'https://github.com/durgaprasad118.png'
-                    }
-                ]
-            },
-            {
-                priority: 'P3',
-                taskTitle: 'Build co-pilot UI',
-                ticketID: 4,
-                labels: ['frontend', 'ui'],
-                assignees: [
-                    {
-                        username: 'kartik',
-
-                        avatar: 'https://github.com/kartikver15gr8.png'
-                    }
-                ]
-            },
-            {
-                priority: 'P1',
-                taskTitle: 'Notification Module',
-                ticketID: 5,
-                assignees: [
-                    {
-                        username: 'Dp',
-
-                        avatar: 'https://github.com/durgaprasad118.png'
-                    },
-                    {
-                        username: 'kartik',
-
-                        avatar: 'https://github.com/kartikver15gr8.png'
-                    }
-                ]
-            },
-            {
-                priority: 'P3',
-                taskTitle: 'Editor Design',
-                ticketID: 11,
-                labels: ['design', 'frontend'],
-                assignees: [
-                    {
-                        username: 'Dp',
-
-                        avatar: 'https://github.com/kartikver15gr8.png'
-                    }
-                ]
+                date: new Date('2024-07-08T18:30:00.000Z'),
+                subTasks: []
             }
         ]
     },
     {
-        listName: 'To-do',
+        status: 'Todo',
         listItems: [
             {
                 priority: 'P2',
-                taskTitle: 'Project table API tests',
-                ticketID: 6,
+                title: 'Project table API tests',
                 labels: ['api', 'backend', 'testing'],
-                assignees: [
-                    {
-                        username: 'Dp',
-
-                        avatar: 'https://github.com/durgaprasad118.png'
-                    }
-                ]
-            },
-            {
-                priority: 'P3',
-                taskTitle: 'Project table fixes',
-                ticketID: 9,
-                assignees: [
-                    {
-                        username: 'Dp',
-
-                        avatar: 'https://github.com/durgaprasad118.png'
-                    },
-                    {
-                        username: 'kartik',
-
-                        avatar: 'https://github.com/kartikver15gr8.png'
-                    },
-                    {
-                        username: 'harkirat',
-                        avatar: 'https://github.com/hkirat.png'
-                    }
-                ]
+                id: 'c',
+                date: new Date('2024-07-08T18:30:00.000Z'),
+                subTasks: []
             }
         ]
     },
     {
-        listName: 'Done',
+        status: 'Done',
         listItems: [
             {
                 priority: 'P3',
-                taskTitle: 'Public view links',
-                ticketID: 7,
-                labels: ['frontend', 'backend'],
-                assignees: [
-                    {
-                        username: 'Dp',
-
-                        avatar: 'https://github.com/durgaprasad118.png'
-                    }
-                ]
-            },
-            {
-                priority: 'P2',
-                taskTitle: 'Command center UI testing',
-                ticketID: 3,
-                labels: ['ui', 'frontend', 'testing'],
-                assignees: [
-                    {
-                        username: 'kartik',
-
-                        avatar: 'https://github.com/kartikver15gr8.png'
-                    }
-                ]
-            },
-            {
-                priority: 'P1',
-                taskTitle: 'Notifictions Phase',
-                ticketID: 4,
-                assignees: [
-                    {
-                        username: 'Dp',
-
-                        avatar: 'https://github.com/durgaprasad118.png'
-                    }
-                ]
+                title: 'Public view links',
+                id: 'd',
+                date: new Date('2024-07-08T18:30:00.000Z'),
+                subTasks: [],
+                labels: ['frontend', 'backend']
             }
         ]
     }
