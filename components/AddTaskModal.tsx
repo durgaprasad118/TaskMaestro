@@ -28,7 +28,7 @@ import { toast } from 'sonner';
 export function AddTaskModal() {
     const [tags, setTags] = useState<string[]>([]);
     const [tasks, setTasks] = useState<TaskProps[]>([]);
-    const [date, setDate] = useState<Date | undefined>();
+    const [date, setDate] = useState<Date>();
     const [title, setTitle] = useState<string>('');
     const [priority, setPriority] = useState<PriorityType>('P1');
     const [open, setOpen] = useRecoilState(addModalAtom);
