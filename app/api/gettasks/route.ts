@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
         try {
             const tasks = await db.user.findUnique({
                 where: { email: userEmail },
-                include: { tasks: true }
+                include: { tasks: { include: { subTasks: true } } }
             });
             if (tasks)
                 return Response.json({
@@ -17,7 +17,6 @@ export async function GET(req: NextRequest) {
                 });
         } catch (error) {
             console.log(error);
-
             return Response.json(
                 { message: 'Failed to fetch tasks' },
                 { status: 500 }

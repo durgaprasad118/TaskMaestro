@@ -1,7 +1,6 @@
 import { db } from '@/db';
 import { getServerSession } from 'next-auth';
 import { NextRequest } from 'next/server';
-
 export async function POST(req: NextRequest) {
     const { title, date, labels, subTasks, priority } = await req.json();
     const session = await getServerSession();
@@ -19,6 +18,7 @@ export async function POST(req: NextRequest) {
                         title,
                         date,
                         priority,
+                        status: 'Todo',
                         labels,
                         userId: user.id,
                         subTasks: {

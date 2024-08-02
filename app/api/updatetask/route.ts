@@ -1,20 +1,22 @@
 import { db } from '@/db';
 import { getServerSession } from 'next-auth';
 import { NextRequest } from 'next/server';
-export async function POST(req: NextRequest) {
+export async function PUT(req: NextRequest) {
     const {
         title,
         date,
         labels,
         subTasks,
         priority,
+        status,
         taskId
     }: {
         title: string;
         date: Date;
         labels: string[];
         priority: PriorityType;
-        subTasks: any;
+        subTasks: TaskProps[];
+        status: Status;
         taskId: string;
     } = await req.json();
     const session = await getServerSession();
@@ -26,21 +28,46 @@ export async function POST(req: NextRequest) {
             }
         });
         if (user) {
-            const updatedTask = await db.task.update({
-                where: { taskId: taskId, userId: user.id },
-                data: {
-                    title,
-                    date,
-                    priority,
-                    subTasks,
-                    labels,
-                    userId: user.id
+            try {
+                const updatedTask = await db.task.update({
+                    where: { id: taskId },
+                    data: {
+                        title: title,
+                        date: date,
+                        priority: priority,
+                        subTasks: {
+                            create: subTasks.map(
+                                (task: {
+                                    title: string;
+                                    completed: boolean;
+                                }) => ({
+                                    title: task.title,
+                                    completed: task.completed
+                                })
+                            )
+                        },
+                        status,
+                        labels,
+                        userId: user.id
+                    }
+                });
+                if (updatedTask) {
+                    return Response.json({
+                        task: updatedTask,
+                        message: 'Task updated successfully'
+                    });
                 }
-            });
-            if (updatedTask) {
-                return Response.json({ task: updatedTask });
+            } catch (error) {
+                console.log(error);
+                return Response.json(
+                    { message: 'Failed to update task' },
+                    { status: 500 }
+                );
             }
         }
     }
-    return Response.json('not added the task');
+    return Response.json(
+        { message: 'Unauthorized or task not found' },
+        { status: 404 }
+    );
 }
