@@ -2,8 +2,8 @@ import { db } from '@/db';
 import { getServerSession } from 'next-auth';
 import { NextRequest } from 'next/server';
 
-export async function PUT(req: NextRequest) {
-    const { title, date, labels, subTasks, priority } = await req.json();
+export async function PUT(req: NextRequest, { params }: { params: string }) {
+    const { id } = params;
     const session = await getServerSession();
     const userEmail = session?.user?.email;
     if (userEmail) {
@@ -14,36 +14,21 @@ export async function PUT(req: NextRequest) {
         });
         if (user) {
             try {
-                const newTask = await db.task.create({
+                const updatedTask = await db.task.update({
+                    where: { id: id },
                     data: {
-                        title,
-                        date,
-                        priority,
-                        labels,
-                        userId: user.id,
-                        subTasks: {
-                            create: subTasks.map(
-                                (task: {
-                                    title: string;
-                                    completed: boolean;
-                                }) => ({
-                                    title: task.title,
-                                    completed: task.completed
-                                })
-                            )
-                        }
+                        status: 'Done'
                     }
                 });
-                if (newTask) {
+                if (updatedTask) {
                     return Response.json({
-                        message: 'Task added successfully',
-                        task: newTask
+                        message: 'Task added successfully'
                     });
                 }
             } catch (error) {
-                console.error('Error creating task:', error);
+                console.error('Error updating task:', error);
                 return Response.json(
-                    { message: 'Failed to create task' },
+                    { message: 'Failed to update task' },
                     { status: 500 }
                 );
             }

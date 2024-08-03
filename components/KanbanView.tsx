@@ -25,6 +25,15 @@ const KanbanView = () => {
     const [draggedOverIndex, setDraggedOverIndex] = useState<number | null>(
         null
     );
+    const SortSelect = async () => {
+        try {
+            const { data } = await axios.put(
+                process.env.NEXT_PUBLIC_BASE_URL + '/changeStatus' || ''
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    };
     const fetchData = async () => {
         try {
             const { data } = await axios.get(
@@ -35,8 +44,6 @@ const KanbanView = () => {
                 ...list,
                 listItems: [...list.listItems]
             }));
-            console.log(tasks.length);
-            console.log(updatedTasks);
             for (let i = 0; i < tasks.length; i++) {
                 if (tasks[i].status == 'Backlog') {
                     updatedTasks[0].listItems.push(tasks[i]);
@@ -60,6 +67,7 @@ const KanbanView = () => {
     useEffect(() => {
         fetchData();
     }, []);
+
     const onDragStart = useCallback(
         (initial: DragStart): void => {
             const { source } = initial;
@@ -79,7 +87,9 @@ const KanbanView = () => {
 
     const onDragEnd = useCallback(
         (result: DropResult): void => {
-            // Reset state
+            // Reset stateo
+            let id = draggedItem?.id;
+            console.log(draggedOverIndex);
             setDraggedItem(null);
             setDraggedOverIndex(null);
 
