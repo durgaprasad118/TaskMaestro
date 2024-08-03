@@ -2,8 +2,8 @@ import { db } from '@/db';
 import { getServerSession } from 'next-auth';
 import { NextRequest } from 'next/server';
 
-export async function PUT(req: NextRequest, { params }: { params: string }) {
-    const { id } = params;
+export async function PUT(req: NextRequest) {
+    const { status, id } = await req.json();
     const session = await getServerSession();
     const userEmail = session?.user?.email;
     if (userEmail) {
@@ -17,7 +17,7 @@ export async function PUT(req: NextRequest, { params }: { params: string }) {
                 const updatedTask = await db.task.update({
                     where: { id: id },
                     data: {
-                        status: 'Done'
+                        status: status
                     }
                 });
                 if (updatedTask) {

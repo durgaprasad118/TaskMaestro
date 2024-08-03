@@ -25,15 +25,7 @@ const KanbanView = () => {
     const [draggedOverIndex, setDraggedOverIndex] = useState<number | null>(
         null
     );
-    const SortSelect = async () => {
-        try {
-            const { data } = await axios.put(
-                process.env.NEXT_PUBLIC_BASE_URL + '/changeStatus' || ''
-            );
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    let selectedId = '';
     const fetchData = async () => {
         try {
             const { data } = await axios.get(
@@ -68,6 +60,22 @@ const KanbanView = () => {
         fetchData();
     }, []);
 
+    const SortData = async (status: String, id: String) => {
+        try {
+            const { data } = await axios.put(
+                process.env.NEXT_PUBLIC_BASE_URL + `/changeStatus/` || '',
+                {
+                    status: status,
+                    id: id
+                }
+            );
+            if (data) {
+                console.log(data.message);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
     const onDragStart = useCallback(
         (initial: DragStart): void => {
             const { source } = initial;
@@ -75,6 +83,8 @@ const KanbanView = () => {
                 (list) => list.status === source.droppableId
             );
             const draggedTask = sourceList?.listItems[source.index];
+            // setSelectedId(draggedTask?.id || ' ');
+            selectedId = draggedTask?.id || '';
             setDraggedItem(draggedTask || null);
         },
         [kanbanData]
@@ -87,9 +97,6 @@ const KanbanView = () => {
 
     const onDragEnd = useCallback(
         (result: DropResult): void => {
-            // Reset stateo
-            let id = draggedItem?.id;
-            console.log(draggedOverIndex);
             setDraggedItem(null);
             setDraggedOverIndex(null);
 
@@ -98,6 +105,7 @@ const KanbanView = () => {
             }
 
             const { source, destination } = result;
+            SortData(destination.droppableId, selectedId);
 
             // Find the source and destination lists
             const sourceListIndex = kanbanData.findIndex(
