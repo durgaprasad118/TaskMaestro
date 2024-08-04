@@ -28,15 +28,15 @@ const Appbar = () => {
                             className="h-12 w-12"
                             alt="Task Maestro Logo"
                         />
-                        <h1 className=" cursor-pointer relative z-10 text-2xl md:text-4xl  bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600  text-center font-sans font-bold">
+                        <h1 className="hidden md:block cursor-pointer relative z-10 text-xl md:text-4xl  bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600  text-center font-sans font-bold">
                             Task Maestro
                         </h1>
                     </div>
                 </div>
                 {session?.status == 'authenticated' ? (
-                    <div className="px-4 flex items-center w-[50vw] gap-2">
+                    <div className="  px-4 md:flex md:items-center  md:w-[50vw]  gap-2">
                         <div>
-                            <Tabs>
+                            <Tabs className=" hidden md:block">
                                 <TabsList className="grid w-[20vw] grid-cols-2">
                                     <TabsTrigger value="Tasks">
                                         Tasks
@@ -48,10 +48,10 @@ const Appbar = () => {
                             </Tabs>
                         </div>
                         <Input
-                            // className="w-[10vw]"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Search Task here"
+                            className="hidden md:block"
                         />
                         <DropdownMenu>
                             <DropdownMenuTrigger>
@@ -91,7 +91,7 @@ const Appbar = () => {
                         <button
                             onClick={() =>
                                 signIn('google', {
-                                    callbackUrl: '/account'
+                                    callbackUrl: '/'
                                 })
                             }
                             className="px-6 py-3 bg-none hover:bg-white hover:text-slate-800 hover:text-slate rounded-xl bg-black border flex gap-1 items-center justify-center dark:border-white hover:scale-105 transition-all duration-400  border-transparent text-slate-200 text-sm"

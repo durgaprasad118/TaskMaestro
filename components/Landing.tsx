@@ -8,8 +8,10 @@ import { AccordionHome } from './Accordion';
 import { AnimatedTooltip } from './ui/animated-tooltip';
 import { features, people } from '@/lib/data';
 import { HoverEffect } from './ui/card-hover-effect';
+import { useRouter } from 'next/navigation';
 export function LandingPage() {
     const session = useSession();
+    const router = useRouter();
     const words = [
         {
             text: 'Simplify'
@@ -57,12 +59,15 @@ export function LandingPage() {
                     <TypewriterEffectSmooth words={words} />
 
                     <Highlight className="text-black dark:text-white px-4 py-2 text-lg">
-                        The key is not to prioritize what's on your schedule,
-                        but to schedule your priorities.
+                        The key is not to prioritize what&aposs on your
+                        schedule, but to schedule your priorities.
                     </Highlight>
                     <div className="flex mt-2 flex-col py-4 md:flex-row space-y-4 md:space-y-0 space-x-0 md:space-x-4">
                         {session.status == 'authenticated' ? (
-                            <button className="px-6 py-2 bg-none hover:bg-white hover:text-slate-800 hover:text-slate rounded-xl bg-black border flex gap-1 items-center justify-center dark:border-white hover:scale-105 transition-all duration-400  border-transparent text-slate-200 text-sm">
+                            <button
+                                onClick={() => router.push('/Dashboard')}
+                                className="px-6 py-2 bg-none hover:bg-white hover:text-slate-800 hover:text-slate rounded-xl bg-black border flex gap-1 items-center justify-center dark:border-white hover:scale-105 transition-all duration-400  border-transparent text-slate-200 text-sm"
+                            >
                                 {' '}
                                 Go to Dashboard{' '}
                                 <img
@@ -75,7 +80,7 @@ export function LandingPage() {
                             <button
                                 onClick={() =>
                                     signIn('google', {
-                                        callbackUrl: '/account'
+                                        callbackUrl: '/'
                                     })
                                 }
                                 className="px-6 py-3 bg-none hover:bg-white hover:text-slate-800 hover:text-slate rounded-xl bg-black border flex gap-1 items-center justify-center dark:border-white hover:scale-105 transition-all duration-400  border-transparent text-slate-200 text-sm"
