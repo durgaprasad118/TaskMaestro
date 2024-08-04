@@ -3,10 +3,10 @@ import { getServerSession } from 'next-auth';
 import { NextRequest } from 'next/server';
 
 export async function DELETE(req: NextRequest) {
-    const { taskId }: { taskId: string } = await req.json();
+    const body = await req.json();
+    const { taskId } = body;
     const session = await getServerSession();
     const userEmail = session?.user?.email;
-
     if (userEmail) {
         const user = await db.user.findFirst({
             where: {
@@ -18,8 +18,7 @@ export async function DELETE(req: NextRequest) {
             try {
                 const deletedTask = await db.task.delete({
                     where: {
-                        taskId: taskId,
-                        userId: user.id
+                        id: taskId
                     }
                 });
 

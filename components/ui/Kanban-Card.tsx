@@ -5,7 +5,17 @@ import { Calendar as CalendarIcon, Tag, Tags } from 'lucide-react';
 import { forwardRef, useId, useState } from 'react';
 import { Badge } from './Badge';
 import { Checkbox } from './checkbox';
-
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from '@/components/ui/alert-dialog';
 import {
     Select,
     SelectContent,
@@ -68,6 +78,23 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
         const refresh = useRecoilRefresher_UNSTABLE(KanbanDataAtom);
         let taskcount = tasks.length;
         let doneTasks = tasks.filter((x) => x.completed).length;
+        const handleDelete = async () => {
+            try {
+                const { data } = await axios.delete(
+                    process.env.NEXT_PUBLIC_BASE_URL + '/deletetask' || '',
+                    {
+                        data: { taskId: taskID }
+                    }
+                );
+                if (data.task) {
+                    toast.success(data?.message);
+                } else if (data.error) {
+                    toast.error(data.error.message ?? 'Failed to update task');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
         const UpdateTask = async () => {
             try {
                 const { data } = await axios.put(
@@ -287,15 +314,54 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                     />
                                 </div>
                             </div>
-                            <div className="flex my-5 items-center w-full justify-center">
-                                <SheetClose asChild>
-                                    <button
-                                        onClick={UpdateTask}
-                                        className=" dark:bg-slate-200 dark:text-black hover:bg-slate-100 hover:scale-105 transition-all duration-300 text-sm px-2 py-1 rounded-md border border-black w-28"
-                                    >
-                                        Update Task
-                                    </button>
-                                </SheetClose>
+                            <div className="">
+                                <div className="flex my-5 items-center w-full justify-center">
+                                    <SheetClose asChild>
+                                        <button
+                                            onClick={UpdateTask}
+                                            className="w-3/4 dark:bg-green-500 dark:text-white hover:bg-green-800 hover:scale-105 transition-all duration-300 text-sm px-3 py-2 rounded-md border border-black"
+                                        >
+                                            Update Task
+                                        </button>
+                                    </SheetClose>
+                                </div>
+
+                                <div className="flex my-5 items-center w-full justify-center">
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <button className="w-3/4 dark:bg-red-500 dark:text-white hover:bg-red-800 hover:scale-105 transition-all duration-300 text-sm px-3 py-2 rounded-md border border-black ">
+                                                Delete Task
+                                            </button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>
+                                                    Are you absolutely sure?
+                                                </AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    This action cannot be
+                                                    undone. This will
+                                                    permanently delete your
+                                                    task!
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <SheetClose asChild>
+                                                    <AlertDialogCancel>
+                                                        Cancel
+                                                    </AlertDialogCancel>
+                                                </SheetClose>
+                                                <SheetClose asChild>
+                                                    <AlertDialogAction
+                                                        onClick={handleDelete}
+                                                    >
+                                                        Delete
+                                                    </AlertDialogAction>
+                                                </SheetClose>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                </div>
                             </div>
                         </SheetContent>
                     </Sheet>
