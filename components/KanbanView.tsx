@@ -1,11 +1,11 @@
 'use client';
 import { ResponsiveControl } from '@/layouts/responsive-control';
 import {
+    allTasksAtom,
     filteredKanbanDataSelector,
     KanbanDataAtom,
     SearchQueryAtom
 } from '@/store';
-import { allTasksAtom } from '@/store/atoms';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import {
@@ -15,9 +15,9 @@ import {
     DropResult
 } from 'react-beautiful-dnd';
 import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import { toast } from 'sonner';
 import { AddTaskModal } from './AddTaskModal';
 import { KanbanList } from './ui/Kanban-list';
-import { toast } from 'sonner';
 
 const KanbanView = () => {
     const [kanbanData, setKanbanData] = useRecoilState(KanbanDataAtom);

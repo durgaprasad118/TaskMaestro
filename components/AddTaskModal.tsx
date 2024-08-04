@@ -7,10 +7,13 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select';
-import { addModalAtom, allTasksAtom } from '@/store/atoms';
+import { addModalAtom, allTasksAtom } from '@/store';
 import { Label } from '@radix-ui/react-dropdown-menu';
+import axios from 'axios';
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useRecoilRefresher_UNSTABLE, useRecoilState } from 'recoil';
+import { toast } from 'sonner';
 import {
     Modal,
     ModalBody,
@@ -22,9 +25,6 @@ import { DatePickerWithPresets } from './ui/DataPicker';
 import { Input } from './ui/input';
 import Subtasks from './ui/Sub-tasks';
 import { TagsInput } from './ui/TagsInput';
-import { motion } from 'framer-motion';
-import axios from 'axios';
-import { toast } from 'sonner';
 export function AddTaskModal() {
     const [tags, setTags] = useState<string[]>([]);
     const [tasks, setTasks] = useState<TaskProps[]>([]);

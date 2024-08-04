@@ -1,6 +1,6 @@
 'use client';
 import { cn } from '@/lib/utils';
-import { addModalAtom } from '@/store/atoms';
+import { addModalAtom } from '@/store';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { ReactNode, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';

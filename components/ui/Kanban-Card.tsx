@@ -1,10 +1,4 @@
 'use client';
-import { format } from 'date-fns';
-import { motion } from 'framer-motion';
-import { Calendar as CalendarIcon, Tag, Tags } from 'lucide-react';
-import { forwardRef, useId, useState } from 'react';
-import { Badge } from './Badge';
-import { Checkbox } from './checkbox';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -24,6 +18,16 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select';
+import { allTasksAtom } from '@/store';
+import axios from 'axios';
+import { format } from 'date-fns';
+import { motion } from 'framer-motion';
+import { Calendar as CalendarIcon, Tag, Tags } from 'lucide-react';
+import { forwardRef, useId, useState } from 'react';
+import { useRecoilRefresher_UNSTABLE } from 'recoil';
+import { toast } from 'sonner';
+import { Badge } from './Badge';
+import { Checkbox } from './checkbox';
 import { DatePickerWithPresets } from './DataPicker';
 import { Input } from './input';
 import { Label } from './label';
@@ -37,11 +41,6 @@ import {
 } from './sheet';
 import Subtasks from './Sub-tasks';
 import { TagsInput } from './TagsInput';
-import axios from 'axios';
-import { toast } from 'sonner';
-import { useRecoilRefresher_UNSTABLE } from 'recoil';
-import { KanbanDataAtom } from '@/store';
-import { allTasksAtom } from '@/store/atoms';
 declare type PriorityNameType = 'P1' | 'P2' | 'P3';
 export const BageForPriority: Record<PriorityNameType, string> = {
     P1: 'red',

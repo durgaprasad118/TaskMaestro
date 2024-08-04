@@ -1,5 +1,7 @@
 export {
     filteredKanbanDataSelector,
     SearchQueryAtom,
-    KanbanDataAtom
+    KanbanDataAtom,
+    allTasksAtom,
+    addModalAtom
 } from './atoms';
