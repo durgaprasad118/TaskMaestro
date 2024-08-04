@@ -1,31 +1,57 @@
 import { db } from '@/db';
 import { getServerSession } from 'next-auth';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+
 export async function GET(req: NextRequest) {
     const session = await getServerSession();
     const userEmail = session?.user?.email;
-    if (userEmail) {
-        try {
-            const tasks = await db.user.findUnique({
-                where: { email: userEmail },
-                include: { tasks: { include: { subTasks: true } } }
-            });
-            if (tasks)
-                return Response.json({
-                    message: 'Tasks fetched successfully',
-                    tasks: tasks
-                });
-        } catch (error) {
-            console.log(error);
-            return Response.json(
-                { message: 'Failed to fetch tasks' },
-                { status: 500 }
-            );
-        }
+
+    if (!userEmail) {
+        return NextResponse.json(
+            { message: 'Unauthorized or task not found' },
+            { status: 404 }
+        );
     }
 
-    return Response.json(
-        { message: 'Unauthorized or task not found' },
-        { status: 404 }
-    );
+    try {
+        const userWithTasks = await db.user.findUnique({
+            where: { email: userEmail },
+            include: { tasks: { include: { subTasks: true } } }
+        });
+
+        if (!userWithTasks) {
+            return NextResponse.json(
+                { message: 'Tasks not found' },
+                { status: 404 }
+            );
+        }
+
+        const initialStructure: KanbanListType[] = [
+            { status: 'Backlog', listItems: [] },
+            { status: 'Progress', listItems: [] },
+            { status: 'Todo', listItems: [] },
+            { status: 'Done', listItems: [] }
+        ];
+
+        userWithTasks.tasks.forEach((task) => {
+            const statusCategory = initialStructure.find(
+                (category) => category.status === task.status
+            );
+
+            if (statusCategory) {
+                statusCategory.listItems.push(task);
+            }
+        });
+
+        return NextResponse.json({
+            message: 'Tasks fetched successfully',
+            tasks: initialStructure
+        });
+    } catch (error) {
+        console.log(error);
+        return NextResponse.json(
+            { message: 'Failed to fetch tasks' },
+            { status: 500 }
+        );
+    }
 }
