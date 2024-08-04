@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Providers, { RecoilRootProvider, ThemeProvider } from './providers';
 const inter = Inter({ subsets: ['latin'] });
-import {Toaster} from "sonner"
+import { Toaster } from 'sonner';
 export const metadata: Metadata = {
     title: 'Task Maestro',
     description: 'Ultimate task manager'
