@@ -41,6 +41,7 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { useRecoilRefresher_UNSTABLE } from 'recoil';
 import { KanbanDataAtom } from '@/store';
+import { allTasksAtom } from '@/store/atoms';
 declare type PriorityNameType = 'P1' | 'P2' | 'P3';
 export const BageForPriority: Record<PriorityNameType, string> = {
     P1: 'red',
@@ -75,7 +76,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
         const [date, setDate] = useState<Date | undefined>(new Date(taskDate));
         const [title, setTitle] = useState<string>(taskTitle || ' ');
         const [prior, setPriority] = useState<PriorityType>(priority);
-        const refresh = useRecoilRefresher_UNSTABLE(KanbanDataAtom);
+        const refresh = useRecoilRefresher_UNSTABLE(allTasksAtom);
         let taskcount = tasks.length;
         let doneTasks = tasks.filter((x) => x.completed).length;
         const handleDelete = async () => {
@@ -88,6 +89,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                 );
                 if (data.task) {
                     toast.success(data?.message);
+                    refresh();
                 } else if (data.error) {
                     toast.error(data.error.message ?? 'Failed to update task');
                 }

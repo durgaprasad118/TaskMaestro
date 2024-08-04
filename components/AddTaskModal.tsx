@@ -7,10 +7,10 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select';
-import { addModalAtom } from '@/store/atoms';
+import { addModalAtom, allTasksAtom } from '@/store/atoms';
 import { Label } from '@radix-ui/react-dropdown-menu';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilRefresher_UNSTABLE, useRecoilState } from 'recoil';
 import {
     Modal,
     ModalBody,
@@ -32,6 +32,7 @@ export function AddTaskModal() {
     const [title, setTitle] = useState<string>('');
     const [priority, setPriority] = useState<PriorityType>('P1');
     const [open, setOpen] = useRecoilState(addModalAtom);
+    const refresh = useRecoilRefresher_UNSTABLE(allTasksAtom);
     const addTodos = async () => {
         try {
             const { data } = await axios.post(
@@ -52,6 +53,7 @@ export function AddTaskModal() {
                 setPriority('P1');
                 setTasks([]);
                 setTags([]);
+                refresh();
             } else if (data.error) {
                 toast.error(data.error.message ?? 'Failed to create task');
             }
