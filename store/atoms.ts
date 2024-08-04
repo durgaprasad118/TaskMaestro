@@ -8,7 +8,6 @@ const SearchQueryAtom = atom<string>({
     key: 'SearchQueryAtom',
     default: ''
 });
-
 const filteredKanbanDataSelector = selector<KanbanListType[]>({
     key: 'filteredKanbanDataSelector',
     get: ({ get }) => {

@@ -354,6 +354,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                                 <SheetClose asChild>
                                                     <AlertDialogAction
                                                         onClick={handleDelete}
+                                                        className="text-white bg-red-500 hover:bg-red-600"
                                                     >
                                                         Delete
                                                     </AlertDialogAction>
