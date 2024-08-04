@@ -89,6 +89,6 @@ model SubTask {
   completed Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Task      Task     @relation(fields: [taskId], references: [id])
+  Task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId    String
 }
