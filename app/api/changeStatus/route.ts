@@ -22,7 +22,7 @@ export async function PUT(req: NextRequest) {
                 });
                 if (updatedTask) {
                     return Response.json({
-                        message: 'Task added successfully'
+                        message: 'Task status updated successfully'
                     });
                 }
             } catch (error) {
