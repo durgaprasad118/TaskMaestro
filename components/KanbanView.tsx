@@ -5,6 +5,7 @@ import {
     KanbanDataAtom,
     SearchQueryAtom
 } from '@/store';
+import { allTasksAtom } from '@/store/atoms';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import {
@@ -13,9 +14,10 @@ import {
     DragUpdate,
     DropResult
 } from 'react-beautiful-dnd';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
 import { AddTaskModal } from './AddTaskModal';
 import { KanbanList } from './ui/Kanban-list';
+import { toast } from 'sonner';
 
 const KanbanView = () => {
     const [kanbanData, setKanbanData] = useRecoilState(KanbanDataAtom);
@@ -25,40 +27,11 @@ const KanbanView = () => {
     const [draggedOverIndex, setDraggedOverIndex] = useState<number | null>(
         null
     );
+    const { state, contents: Tasks } = useRecoilValueLoadable(allTasksAtom);
     let selectedId = '';
-    const fetchData = async () => {
-        try {
-            const { data } = await axios.get(
-                process.env.NEXT_PUBLIC_BASE_URL + '/gettasks' || ''
-            );
-            let tasks = data?.tasks?.tasks;
-            let updatedTasks = kanbanData.map((list) => ({
-                ...list,
-                listItems: [...list.listItems]
-            }));
-            for (let i = 0; i < tasks.length; i++) {
-                if (tasks[i].status == 'Backlog') {
-                    updatedTasks[0].listItems.push(tasks[i]);
-                }
-                if (tasks[i].status == 'Progress') {
-                    updatedTasks[1].listItems.push(tasks[i]);
-                }
-
-                if (tasks[i].status == 'Todo') {
-                    updatedTasks[2].listItems.push(tasks[i]);
-                }
-                if (tasks[i].status == 'Done') {
-                    updatedTasks[3].listItems.push(tasks[i]);
-                }
-            }
-            setKanbanData(updatedTasks);
-        } catch (error) {
-            console.log(error);
-        }
-    };
     useEffect(() => {
-        fetchData();
-    }, []);
+        setKanbanData(Tasks);
+    }, [state]);
 
     const SortData = async (status: String, id: String) => {
         try {
@@ -69,11 +42,9 @@ const KanbanView = () => {
                     id: id
                 }
             );
-            if (data) {
-                console.log(data.message);
-            }
         } catch (error) {
             console.log(error);
+            toast.error('error changing status');
         }
     };
     const onDragStart = useCallback(
@@ -146,6 +117,10 @@ const KanbanView = () => {
         },
         [kanbanData, setKanbanData]
     );
+
+    if (state == 'loading') {
+        return <h1> Loading</h1>;
+    }
 
     return (
         <div>
