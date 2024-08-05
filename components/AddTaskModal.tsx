@@ -25,6 +25,7 @@ import { DatePickerWithPresets } from './ui/DataPicker';
 import { Input } from './ui/input';
 import Subtasks from './ui/Sub-tasks';
 import { TagsInput } from './ui/TagsInput';
+import Spinner from './ui/Spinner';
 export function AddTaskModal() {
     const [tags, setTags] = useState<string[]>([]);
     const [tasks, setTasks] = useState<TaskProps[]>([]);
@@ -33,13 +34,20 @@ export function AddTaskModal() {
     const [priority, setPriority] = useState<PriorityType>('P1');
     const [open, setOpen] = useRecoilState(addModalAtom);
     const refresh = useRecoilRefresher_UNSTABLE(allTasksAtom);
+    const [addingTask, setAddingTask] = useState(false);
     const addTodos = async () => {
         try {
+            setAddingTask(true);
+            if (!title) {
+                toast.error('Title  is mandatory');
+                setAddingTask(false);
+                return;
+            }
             const { data } = await axios.post(
                 process.env.NEXT_PUBLIC_BASE_URL + '/addTodo' || '',
                 {
                     title: title,
-                    date: date,
+                    date: date ?? new Date(),
                     priority: priority,
                     subTasks: [...tasks],
                     labels: [...tags]
@@ -54,11 +62,15 @@ export function AddTaskModal() {
                 setTasks([]);
                 setTags([]);
                 refresh();
+                setAddingTask(false);
             } else if (data.error) {
                 toast.error(data.error.message ?? 'Failed to create task');
+                setAddingTask(false);
             }
         } catch (error) {
             console.log(error);
+            toast.error('Failed to create Task');
+            setAddingTask(false);
         }
     };
     useEffect(() => {
@@ -151,9 +163,10 @@ export function AddTaskModal() {
                     <ModalFooter className="gap-4 flex items-center justify-center">
                         <button
                             onClick={addTodos}
+                            disabled={addingTask}
                             className=" dark:bg-slate-200 dark:text-black hover:bg-slate-100 hover:scale-105 transition-all duration-300 text-sm px-2 py-1 rounded-md border border-black w-28"
                         >
-                            Add Task
+                            {addingTask ? <Spinner /> : 'Add Task'}
                         </button>
                     </ModalFooter>
                 </ModalBody>

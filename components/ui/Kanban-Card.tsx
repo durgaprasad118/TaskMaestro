@@ -41,6 +41,7 @@ import {
 } from './sheet';
 import Subtasks from './Sub-tasks';
 import { TagsInput } from './TagsInput';
+import Spinner from './Spinner';
 declare type PriorityNameType = 'P1' | 'P2' | 'P3';
 export const BageForPriority: Record<PriorityNameType, string> = {
     P1: 'red',
@@ -75,11 +76,14 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
         const [date, setDate] = useState<Date | undefined>(new Date(taskDate));
         const [title, setTitle] = useState<string>(taskTitle || ' ');
         const [prior, setPriority] = useState<PriorityType>(priority);
+        const [updating, setUpdating] = useState(false);
+        const [deleting, setDeleting] = useState(false);
         const refresh = useRecoilRefresher_UNSTABLE(allTasksAtom);
         let taskcount = tasks.length;
         let doneTasks = tasks.filter((x) => x.completed).length;
         const handleDelete = async () => {
             try {
+                setDeleting(true);
                 const { data } = await axios.delete(
                     process.env.NEXT_PUBLIC_BASE_URL + '/deletetask' || '',
                     {
@@ -88,16 +92,24 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                 );
                 if (data.task) {
                     toast.success(data?.message);
-                    refresh();
                 } else if (data.error) {
                     toast.error(data.error.message ?? 'Failed to update task');
                 }
             } catch (error) {
                 console.log(error);
+            } finally {
+                setDeleting(false);
+                refresh();
             }
         };
         const UpdateTask = async () => {
             try {
+                setUpdating(true);
+                if (!title) {
+                    toast.error('Title is mandatory');
+                    setUpdating(false);
+                    return;
+                }
                 const { data } = await axios.put(
                     process.env.NEXT_PUBLIC_BASE_URL + '/updatetask' || '',
                     {
@@ -111,8 +123,8 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                     }
                 );
                 if (data.task) {
-                    refresh();
                     toast.success(data?.message);
+                    setUpdating(false);
                     setTitle('');
                     setDate(undefined);
                     setPriority('P1');
@@ -120,9 +132,13 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                     setTags([]);
                 } else if (data.error) {
                     toast.error(data.error.message ?? 'Failed to update task');
+                    setUpdating(false);
                 }
             } catch (error) {
                 console.log(error);
+            } finally {
+                setUpdating(false);
+                refresh();
             }
         };
         let id = `${taskID}-${taskDate}`;
@@ -317,14 +333,13 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                             </div>
                             <div className="">
                                 <div className="flex my-5 items-center w-full justify-center">
-                                    <SheetClose asChild>
-                                        <button
-                                            onClick={UpdateTask}
-                                            className="w-3/4 dark:bg-green-500 dark:text-white hover:bg-green-800 hover:scale-105 transition-all duration-300 text-sm px-3 py-2 rounded-md border border-black"
-                                        >
-                                            Update Task
-                                        </button>
-                                    </SheetClose>
+                                    <button
+                                        onClick={UpdateTask}
+                                        className="w-3/4 dark:bg-green-500 dark:text-white hover:bg-green-800 hover:scale-105 transition-all duration-300 text-sm px-3 py-2 rounded-md border border-black"
+                                        disabled={updating}
+                                    >
+                                        {updating ? <Spinner /> : 'Update Task'}
+                                    </button>
                                 </div>
 
                                 <div className="flex my-5 items-center w-full justify-center">
@@ -352,14 +367,17 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                                         Cancel
                                                     </AlertDialogCancel>
                                                 </SheetClose>
-                                                <SheetClose asChild>
-                                                    <AlertDialogAction
-                                                        onClick={handleDelete}
-                                                        className="text-white bg-red-500 hover:bg-red-600"
-                                                    >
-                                                        Delete
-                                                    </AlertDialogAction>
-                                                </SheetClose>
+                                                <AlertDialogAction
+                                                    onClick={handleDelete}
+                                                    className="text-white bg-red-500 hover:bg-red-600"
+                                                    disabled={deleting}
+                                                >
+                                                    {deleting ? (
+                                                        <Spinner />
+                                                    ) : (
+                                                        ' Delete'
+                                                    )}
+                                                </AlertDialogAction>
                                             </AlertDialogFooter>
                                         </AlertDialogContent>
                                     </AlertDialog>
