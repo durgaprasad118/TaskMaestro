@@ -15,18 +15,25 @@ import { SearchQueryAtom } from '@/store';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRecoilState } from 'recoil';
 import { Input } from './ui/input';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 const Appbar = () => {
     const [search, setSearch] = useRecoilState(SearchQueryAtom);
     const session = useSession();
+    const router = useRouter();
     return (
         <header className=" border-b   bg-transparent relative z-10">
             <ResponsiveControl className="flex flex-row py-2 px-4 h-full items-center justify-between">
                 <div className="header-content-wrapper">
-                    <div className="flex items-center justify-center gap-3">
-                        <img
+                    <div
+                        onClick={() => router.push('/')}
+                        className="flex items-center justify-center gap-3"
+                    >
+                        <Image
                             src="/logo.png"
-                            className="h-12 w-12"
                             alt="Task Maestro Logo"
+                            width={40}
+                            height={40}
                         />
                         <h1 className="hidden md:block cursor-pointer relative z-10 text-xl md:text-4xl  bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600  text-center font-sans font-bold">
                             Task Maestro

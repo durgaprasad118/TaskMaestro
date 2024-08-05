@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 const Footer = () => {
     return (
         <footer className="  w-[99vw] shadow ">
@@ -7,10 +9,11 @@ const Footer = () => {
                         href=""
                         className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
                     >
-                        <img
+                        <Image
                             src="/logo.png"
-                            className="h-12 w-12"
                             alt="Task Maestro Logo"
+                            width={40}
+                            height={40}
                         />
                         <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                             Task Maestro

@@ -9,6 +9,7 @@ import { AnimatedTooltip } from './ui/animated-tooltip';
 import { features, people } from '@/lib/data';
 import { HoverEffect } from './ui/card-hover-effect';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 export function LandingPage() {
     const session = useSession();
     const router = useRouter();
@@ -70,10 +71,11 @@ export function LandingPage() {
                             >
                                 {' '}
                                 Go to Dashboard{' '}
-                                <img
+                                <Image
                                     src="/logo.png"
-                                    className="h-8 "
                                     alt="Task Maestro Logo"
+                                    width={40}
+                                    height={40}
                                 />
                             </button>
                         ) : (
