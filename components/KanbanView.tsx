@@ -34,6 +34,7 @@ const KanbanView = () => {
     useEffect(() => {
         if (state === 'hasValue') {
             setKanbanData(Tasks);
+            console.log(Tasks);
         }
     }, [state, Tasks, setKanbanData]);
 
@@ -120,11 +121,6 @@ const KanbanView = () => {
     if (!isClient) {
         return null;
     }
-
-    if (state === 'loading') {
-        return <h1 className="hide-on-small-screens">Loading...</h1>;
-    }
-
     return (
         <div>
             <SmallerDevicesError />
