@@ -1,6 +1,5 @@
 'use client';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
     DropdownMenu,
@@ -11,14 +10,21 @@ import {
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { ResponsiveControl } from '@/layouts/responsive-control';
+import { useDebounce } from '@/lib/useDebounce';
 import { SearchQueryAtom } from '@/store';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { useRecoilState } from 'recoil';
-import { Input } from './ui/input';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { Input } from './ui/input';
 const Appbar = () => {
-    const [search, setSearch] = useRecoilState(SearchQueryAtom);
+    const [searchVal, setSearchVal] = useState('');
+    const setSearch = useSetRecoilState(SearchQueryAtom);
+    const debouncedVal = useDebounce(searchVal);
+    useEffect(() => {
+        setSearch(debouncedVal.toLowerCase());
+    }, [debouncedVal, setSearch]);
     const session = useSession();
     const router = useRouter();
     return (
@@ -55,8 +61,8 @@ const Appbar = () => {
                             </Tabs>
                         </div>
                         <Input
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            value={searchVal}
+                            onChange={(e) => setSearchVal(e.target.value)}
                             placeholder="Search Task here"
                             className="hidden md:block"
                         />
