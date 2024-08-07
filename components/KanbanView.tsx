@@ -39,6 +39,7 @@ const KanbanView = () => {
     }, [state, Tasks, setKanbanData]);
 
     useEffect(() => {
+        localStorage.setItem('tab', 'Tasks');
         setIsClient(true);
     }, []);
 

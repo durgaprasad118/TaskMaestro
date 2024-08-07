@@ -3,5 +3,6 @@ export {
     SearchQueryAtom,
     KanbanDataAtom,
     allTasksAtom,
-    addModalAtom
+    addModalAtom,
+    layoutAtom
 } from './atoms';

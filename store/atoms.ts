@@ -1,6 +1,6 @@
 import { INITIAL_KANBAN_DATA } from '@/data/initialData';
 import axios from 'axios';
-import { atom, selector, useRecoilState } from 'recoil';
+import { atom, selector } from 'recoil';
 
 const KanbanDataAtom = atom<KanbanListType[]>({
     key: 'KanbanDataAtom',
@@ -47,6 +47,10 @@ const filteredKanbanDataSelector = selector<KanbanListType[]>({
         }));
     }
 });
+const layoutAtom = atom({
+    key: 'layoutAtom',
+    default: localStorage.getItem('tab') ?? localStorage.setItem('tab', 'Tasks')
+});
 
 //for add modal closing and opening
 const addModalAtom = atom<Boolean>({
@@ -55,8 +59,9 @@ const addModalAtom = atom<Boolean>({
 });
 export {
     addModalAtom,
+    allTasksAtom,
     filteredKanbanDataSelector,
     KanbanDataAtom,
-    SearchQueryAtom,
-    allTasksAtom
+    layoutAtom,
+    SearchQueryAtom
 };

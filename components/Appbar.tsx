@@ -11,17 +11,18 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ResponsiveControl } from '@/layouts/responsive-control';
 import { useDebounce } from '@/lib/useDebounce';
-import { SearchQueryAtom } from '@/store';
+import { layoutAtom, SearchQueryAtom } from '@/store';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { Input } from './ui/input';
 const Appbar = () => {
     const [searchVal, setSearchVal] = useState('');
     const setSearch = useSetRecoilState(SearchQueryAtom);
     const debouncedVal = useDebounce(searchVal);
+    const [tabItem, setTabItem] = useRecoilState(layoutAtom);
     useEffect(() => {
         setSearch(debouncedVal.toLowerCase());
     }, [debouncedVal, setSearch]);
@@ -49,12 +50,29 @@ const Appbar = () => {
                 {session?.status == 'authenticated' ? (
                     <div className="  px-4 md:flex md:items-center  md:w-[50vw]  gap-2">
                         <div>
-                            <Tabs className=" hidden md:block">
+                            <Tabs
+                                defaultValue={tabItem ?? 'Tasks'}
+                                className=" hidden md:block"
+                            >
                                 <TabsList className="grid w-[20vw] grid-cols-2">
-                                    <TabsTrigger value="Tasks">
+                                    <TabsTrigger
+                                        onClick={() => {
+                                            router.push('/Dashboard');
+                                        }}
+                                        value="Tasks"
+                                    >
                                         Tasks
                                     </TabsTrigger>
-                                    <TabsTrigger value="Calendar">
+                                    <TabsTrigger
+                                        onClick={() => {
+                                            localStorage.setItem(
+                                                'tab',
+                                                'Calendar'
+                                            );
+                                            router.push('/Calendar');
+                                        }}
+                                        value="Calendar"
+                                    >
                                         Calendar
                                     </TabsTrigger>
                                 </TabsList>
