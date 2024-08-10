@@ -34,12 +34,10 @@ const KanbanView = () => {
     useEffect(() => {
         if (state === 'hasValue') {
             setKanbanData(Tasks);
-            console.log(Tasks);
         }
     }, [state, Tasks, setKanbanData]);
 
     useEffect(() => {
-        localStorage.setItem('tab', 'Tasks');
         setIsClient(true);
     }, []);
 

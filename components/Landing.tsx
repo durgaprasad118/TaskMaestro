@@ -10,9 +10,16 @@ import { features, people } from '@/lib/data';
 import { HoverEffect } from './ui/card-hover-effect';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { layoutAtom } from '@/store';
 export function LandingPage() {
     const session = useSession();
     const router = useRouter();
+    const setTabItem = useSetRecoilState(layoutAtom);
+    useEffect(() => {
+        localStorage.setItem('tab', 'Home');
+    }, []);
     const words = [
         {
             text: 'Simplify'
@@ -66,7 +73,11 @@ export function LandingPage() {
                     <div className="flex mt-2 flex-col py-4 md:flex-row space-y-4 md:space-y-0 space-x-0 md:space-x-4">
                         {session.status == 'authenticated' ? (
                             <button
-                                onClick={() => router.push('/Dashboard')}
+                                onClick={() => {
+                                    localStorage.setItem('tab', 'Tasks');
+                                    setTabItem('Tasks');
+                                    router.push('/Dashboard');
+                                }}
                                 className="px-6 py-2 bg-none hover:bg-white hover:text-slate-800 hover:text-slate rounded-xl bg-black border flex gap-1 items-center justify-center dark:border-white hover:scale-105 transition-all duration-400  border-transparent text-slate-200 text-sm"
                             >
                                 {' '}

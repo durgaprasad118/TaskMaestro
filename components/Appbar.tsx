@@ -26,6 +26,12 @@ const Appbar = () => {
     useEffect(() => {
         setSearch(debouncedVal.toLowerCase());
     }, [debouncedVal, setSearch]);
+    useEffect(() => {
+        const storedTab = localStorage.getItem('tab');
+        if (storedTab && tabItem != storedTab) {
+            setTabItem(storedTab);
+        }
+    }, [tabItem, setTabItem]);
     const session = useSession();
     const router = useRouter();
     return (
@@ -33,7 +39,11 @@ const Appbar = () => {
             <ResponsiveControl className="flex flex-row py-2 px-4 h-full items-center justify-between">
                 <div className="header-content-wrapper">
                     <div
-                        onClick={() => router.push('/')}
+                        onClick={() => {
+                            localStorage.setItem('tab', 'Home');
+                            setTabItem('Home');
+                            router.push('/');
+                        }}
                         className="flex items-center justify-center gap-3"
                     >
                         <Image
@@ -51,12 +61,28 @@ const Appbar = () => {
                     <div className="  px-4 md:flex md:items-center  md:w-[50vw]  gap-2">
                         <div>
                             <Tabs
-                                defaultValue={tabItem ?? 'Tasks'}
+                                value={tabItem ?? 'Home'}
                                 className=" hidden md:block"
                             >
-                                <TabsList className="grid w-[20vw] grid-cols-2">
+                                <TabsList className="grid w-[20vw] grid-cols-3">
                                     <TabsTrigger
                                         onClick={() => {
+                                            localStorage.setItem('tab', 'Home');
+                                            setTabItem('Home');
+                                            router.push('/');
+                                        }}
+                                        value="Home"
+                                    >
+                                        Home
+                                    </TabsTrigger>
+                                    <TabsTrigger
+                                        onClick={() => {
+                                            localStorage.setItem(
+                                                'tab',
+                                                'Tasks'
+                                            );
+
+                                            setTabItem('Tasks');
                                             router.push('/Dashboard');
                                         }}
                                         value="Tasks"
@@ -69,6 +95,7 @@ const Appbar = () => {
                                                 'tab',
                                                 'Calendar'
                                             );
+                                            setTabItem('Calendar');
                                             router.push('/Calendar');
                                         }}
                                         value="Calendar"
