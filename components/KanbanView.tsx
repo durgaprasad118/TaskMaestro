@@ -1,17 +1,4 @@
 'use client';
-import { useEffect, useState, useCallback } from 'react';
-import axios from 'axios';
-import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
-import { toast } from 'sonner';
-import {
-    DragDropContext,
-    DragStart,
-    DragUpdate,
-    DropResult
-} from 'react-beautiful-dnd';
-import { AddTaskModal } from './AddTaskModal';
-import { KanbanList } from './ui/Kanban-list';
-import SmallerDevicesError from './SmallerDevicesError';
 import { ResponsiveControl } from '@/layouts/responsive-control';
 import {
     allTasksAtom,
@@ -19,6 +6,19 @@ import {
     KanbanDataAtom,
     SearchQueryAtom
 } from '@/store';
+import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
+import {
+    DragDropContext,
+    DragStart,
+    DragUpdate,
+    DropResult
+} from 'react-beautiful-dnd';
+import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import { toast } from 'sonner';
+import { AddTaskModal } from './AddTaskModal';
+import SmallerDevicesError from './SmallerDevicesError';
+import { KanbanList } from './ui/Kanban-list';
 
 const KanbanView = () => {
     const [kanbanData, setKanbanData] = useRecoilState(KanbanDataAtom);
@@ -30,7 +30,6 @@ const KanbanView = () => {
     );
     const { state, contents: Tasks } = useRecoilValueLoadable(allTasksAtom);
     const [isClient, setIsClient] = useState(false);
-
     useEffect(() => {
         if (state === 'hasValue') {
             setKanbanData(Tasks);
@@ -123,27 +122,29 @@ const KanbanView = () => {
     return (
         <div>
             <SmallerDevicesError />
-            <div className="hide-on-small-screens">
-                <div className="mt-3">
-                    <AddTaskModal />
+            <div className="flex ">
+                <div className="hide-on-small-screens">
+                    <div className="mt-3">
+                        <AddTaskModal />
+                    </div>
+                    <DragDropContext
+                        onDragStart={onDragStart}
+                        onDragUpdate={onDragUpdate}
+                        onDragEnd={onDragEnd}
+                    >
+                        <ResponsiveControl className="flex flex-row items-start justify-start gap-3 max-xl:overflow-x-scroll">
+                            {filteredKanbanData.map(
+                                (list: KanbanListType, index: number) => (
+                                    <KanbanList
+                                        key={list.status}
+                                        index={index}
+                                        {...list}
+                                    />
+                                )
+                            )}
+                        </ResponsiveControl>
+                    </DragDropContext>
                 </div>
-                <DragDropContext
-                    onDragStart={onDragStart}
-                    onDragUpdate={onDragUpdate}
-                    onDragEnd={onDragEnd}
-                >
-                    <ResponsiveControl className="flex flex-row items-start justify-start gap-3 max-xl:overflow-x-scroll">
-                        {filteredKanbanData.map(
-                            (list: KanbanListType, index: number) => (
-                                <KanbanList
-                                    key={list.status}
-                                    index={index}
-                                    {...list}
-                                />
-                            )
-                        )}
-                    </ResponsiveControl>
-                </DragDropContext>
             </div>
         </div>
     );

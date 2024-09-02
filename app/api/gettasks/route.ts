@@ -42,10 +42,17 @@ export async function GET(req: NextRequest) {
                 statusCategory.listItems.push(task);
             }
         });
+        const analyticData = {
+            Backlog: initialStructure[0].listItems.length,
+            Progress: initialStructure[1].listItems.length,
+            Todo: initialStructure[2].listItems.length,
+            Done: initialStructure[3].listItems.length
+        };
 
         return NextResponse.json({
             message: 'Tasks fetched successfully',
-            tasks: initialStructure
+            tasks: initialStructure,
+            analytics: analyticData
         });
     } catch (error) {
         console.log(error);
