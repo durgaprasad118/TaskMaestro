@@ -3,8 +3,8 @@ import Image from 'next/image';
 const Footer = () => {
     return (
         <footer className="  w-[99vw] shadow ">
-            <div className="w-full p-2">
-                <div className="flex items-center justify-between">
+            <div className="w-full ">
+                <div className="px-8 flex items-center justify-between">
                     <a
                         href=""
                         className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
@@ -51,8 +51,8 @@ const Footer = () => {
                         </li>
                     </ul>
                 </div>
-                <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-                <span className="block mb-3 text-sm text-gray-500 sm:text-center dark:text-gray-400">
+                <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8 " />
+                <span className="block mb-5 text-sm text-gray-500 sm:text-center dark:text-gray-400">
                     © {new Date().getFullYear()}{' '}
                     <a href="" className="hover:underline">
                         Task Maestro™
