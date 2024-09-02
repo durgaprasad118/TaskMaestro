@@ -1,6 +1,7 @@
 import { db } from '@/db';
 import { getServerSession } from 'next-auth';
 import { NextRequest } from 'next/server';
+
 export async function PUT(req: NextRequest) {
     const {
         title,
@@ -19,16 +20,26 @@ export async function PUT(req: NextRequest) {
         status: Status;
         taskId: string;
     } = await req.json();
+
     const session = await getServerSession();
     const userEmail = session?.user?.email;
+
     if (userEmail) {
         const user = await db.user.findFirst({
             where: {
                 email: userEmail
             }
         });
+
         if (user) {
             try {
+                //  Deleting the  existing sub-tasks to avoid the re-cerating the subTasks
+                await db.subTask.deleteMany({
+                    where: {
+                        taskId: taskId
+                    }
+                });
+
                 const updatedTask = await db.task.update({
                     where: { id: taskId },
                     data: {
@@ -51,6 +62,7 @@ export async function PUT(req: NextRequest) {
                         userId: user.id
                     }
                 });
+
                 if (updatedTask) {
                     return Response.json({
                         task: updatedTask,
@@ -66,6 +78,7 @@ export async function PUT(req: NextRequest) {
             }
         }
     }
+
     return Response.json(
         { message: 'Unauthorized or task not found' },
         { status: 404 }

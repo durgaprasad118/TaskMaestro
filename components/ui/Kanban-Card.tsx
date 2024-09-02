@@ -39,9 +39,9 @@ import {
     SheetTitle,
     SheetTrigger
 } from './sheet';
+import Spinner from './Spinner';
 import Subtasks from './Sub-tasks';
 import { TagsInput } from './TagsInput';
-import Spinner from './Spinner';
 declare type PriorityNameType = 'P1' | 'P2' | 'P3';
 export const BageForPriority: Record<PriorityNameType, string> = {
     P1: 'red',
@@ -115,7 +115,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                     {
                         title: title,
                         date: date,
-                        priority: priority,
+                        priority: prior,
                         subTasks: [...tasks],
                         labels: [...tags],
                         status: status,
@@ -124,15 +124,8 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                 );
                 if (data.task) {
                     toast.success(data?.message);
-                    setUpdating(false);
-                    setTitle('');
-                    setDate(undefined);
-                    setPriority('P1');
-                    setTasks([]);
-                    setTags([]);
                 } else if (data.error) {
                     toast.error(data.error.message ?? 'Failed to update task');
-                    setUpdating(false);
                 }
             } catch (error) {
                 console.log(error);
@@ -170,7 +163,6 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                 className="relative group   bg-gradient-to-b dark:from-slate-900 from-slate-200 dark:to-slate-950 to-slate-300 p-6 rounded-3xl overflow-hidden"
                             >
                                 <Grid size={20} />
-
                                 <Badge
                                     theme={BageForPriority[priority]}
                                     className="mb-2"
@@ -199,7 +191,6 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    {/*Add a check if theree are  subtasks then onbly render this else don't  */}
                                     <div className="flex items-center">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -281,7 +272,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                         onChange={(e) =>
                                             setTitle(e.target.value)
                                         }
-                                        id="title"
+                                        id="task name"
                                         placeholder="task name"
                                     />
                                 </div>
@@ -333,13 +324,19 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                             </div>
                             <div className="">
                                 <div className="flex my-5 items-center w-full justify-center">
-                                    <button
-                                        onClick={UpdateTask}
-                                        className="w-3/4 dark:bg-green-500 dark:text-white hover:bg-green-800 hover:scale-105 transition-all duration-300 text-sm px-3 py-2 rounded-md border border-black"
-                                        disabled={updating}
-                                    >
-                                        {updating ? <Spinner /> : 'Update Task'}
-                                    </button>
+                                    <SheetClose asChild>
+                                        <button
+                                            onClick={UpdateTask}
+                                            className="w-3/4 dark:bg-green-500 dark:text-white hover:bg-green-800 hover:scale-105 transition-all duration-300 text-sm px-3 py-2 rounded-md border border-black"
+                                            disabled={updating}
+                                        >
+                                            {updating ? (
+                                                <Spinner />
+                                            ) : (
+                                                'Update Task'
+                                            )}
+                                        </button>
+                                    </SheetClose>
                                 </div>
 
                                 <div className="flex my-5 items-center w-full justify-center">
