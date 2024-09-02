@@ -160,7 +160,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                 id={id}
                                 {...args}
                                 key={id}
-                                className="relative group   bg-gradient-to-b dark:from-slate-900 from-slate-200 dark:to-slate-950 to-slate-300 p-6 rounded-3xl overflow-hidden"
+                                className="relative group bg-gradient-to-b dark:from-slate-900 from-slate-200 dark:to-slate-950 to-slate-300 p-6 rounded-3xl overflow-hidden"
                             >
                                 <Grid size={20} />
                                 <Badge
@@ -179,9 +179,9 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                     </p>
                                 </div>
 
-                                <div className="my-3 flex flex-row items-center justify-between">
+                                <div className="my-3 flex flex-row items-center mr-4">
                                     <div className="flex items-center">
-                                        <CalendarIcon className=" h-3 " />
+                                        <CalendarIcon className="h-3" />
                                         <span className="text-gray-400 font-medium text-xs">
                                             {format(
                                                 date || new Date(),
