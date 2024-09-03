@@ -42,6 +42,7 @@ import {
 import Spinner from './Spinner';
 import Subtasks from './Sub-tasks';
 import { TagsInput } from './TagsInput';
+import { analyticsAtom } from '@/store/atoms';
 declare type PriorityNameType = 'P1' | 'P2' | 'P3';
 export const BageForPriority: Record<PriorityNameType, string> = {
     P1: 'red',
@@ -79,6 +80,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
         const [updating, setUpdating] = useState(false);
         const [deleting, setDeleting] = useState(false);
         const refresh = useRecoilRefresher_UNSTABLE(allTasksAtom);
+        const AnalyticRefresh = useRecoilRefresher_UNSTABLE(analyticsAtom);
         let taskcount = tasks.length;
         let doneTasks = tasks.filter((x) => x.completed).length;
         const handleDelete = async () => {
@@ -100,6 +102,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
             } finally {
                 setDeleting(false);
                 refresh();
+                AnalyticRefresh();
             }
         };
         const UpdateTask = async () => {
@@ -124,6 +127,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                 );
                 if (data.task) {
                     toast.success(data?.message);
+                    refresh();
                 } else if (data.error) {
                     toast.error(data.error.message ?? 'Failed to update task');
                 }
@@ -132,6 +136,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
             } finally {
                 setUpdating(false);
                 refresh();
+                AnalyticRefresh();
             }
         };
         let id = `${taskID}-${taskDate}`;

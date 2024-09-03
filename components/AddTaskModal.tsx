@@ -26,6 +26,7 @@ import { Input } from './ui/input';
 import Subtasks from './ui/Sub-tasks';
 import { TagsInput } from './ui/TagsInput';
 import Spinner from './ui/Spinner';
+import { analyticsAtom } from '@/store/atoms';
 export function AddTaskModal() {
     const [tags, setTags] = useState<string[]>([]);
     const [tasks, setTasks] = useState<TaskProps[]>([]);
@@ -34,6 +35,7 @@ export function AddTaskModal() {
     const [priority, setPriority] = useState<PriorityType>('P1');
     const [open, setOpen] = useRecoilState(addModalAtom);
     const refresh = useRecoilRefresher_UNSTABLE(allTasksAtom);
+    const AnalyticRefresh = useRecoilRefresher_UNSTABLE(analyticsAtom);
     const [addingTask, setAddingTask] = useState(false);
     const addTodos = async () => {
         try {
@@ -61,7 +63,6 @@ export function AddTaskModal() {
                 setPriority('P1');
                 setTasks([]);
                 setTags([]);
-                refresh();
                 setAddingTask(false);
             } else if (data.error) {
                 toast.error(data.error.message ?? 'Failed to create task');
@@ -71,6 +72,9 @@ export function AddTaskModal() {
             console.log(error);
             toast.error('Failed to create Task');
             setAddingTask(false);
+        } finally {
+            refresh();
+            AnalyticRefresh();
         }
     };
     useEffect(() => {

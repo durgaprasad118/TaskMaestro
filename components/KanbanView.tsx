@@ -14,11 +14,17 @@ import {
     DragUpdate,
     DropResult
 } from 'react-beautiful-dnd';
-import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import {
+    useRecoilRefresher_UNSTABLE,
+    useRecoilState,
+    useRecoilValue,
+    useRecoilValueLoadable
+} from 'recoil';
 import { toast } from 'sonner';
 import { AddTaskModal } from './AddTaskModal';
 import SmallerDevicesError from './SmallerDevicesError';
 import { KanbanList } from './ui/Kanban-list';
+import { analyticsAtom } from '@/store/atoms';
 
 const KanbanView = () => {
     const [kanbanData, setKanbanData] = useRecoilState(KanbanDataAtom);
@@ -28,6 +34,9 @@ const KanbanView = () => {
     const [draggedOverIndex, setDraggedOverIndex] = useState<number | null>(
         null
     );
+
+    const refresh = useRecoilRefresher_UNSTABLE(allTasksAtom);
+    const AnalyticRefresh = useRecoilRefresher_UNSTABLE(analyticsAtom);
     const { state, contents: Tasks } = useRecoilValueLoadable(allTasksAtom);
     const [isClient, setIsClient] = useState(false);
     useEffect(() => {
@@ -52,6 +61,9 @@ const KanbanView = () => {
         } catch (error) {
             console.error(error);
             toast.error('Error changing status');
+        } finally {
+            refresh();
+            AnalyticRefresh();
         }
     };
 
