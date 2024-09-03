@@ -1,5 +1,4 @@
 'use client';
-import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 import {
     ChartConfig,
     ChartContainer,
@@ -8,36 +7,39 @@ import {
     ChartTooltip,
     ChartTooltipContent
 } from '@/components/ui/chart';
-import { useRecoilValueLoadable } from 'recoil';
 import { analyticsAtom } from '@/store/atoms';
-import { TypewriterEffectSmooth } from '@/components/ui/typewriter-effect';
-
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
+import { useRecoilValueLoadable } from 'recoil';
 const chartData = [
-    { status: 'Backlog', count: 186, mobile: 80 },
-    { status: 'Progress', count: 305, mobile: 200 },
-    { status: 'Todo', count: 237, mobile: 120 },
-    { status: 'Done', count: 73, mobile: 190 }
+    { status: 'Backlog', taskCount: 186, subTaskCount: 80 },
+    { status: 'Progress', taskCount: 305, subTaskCount: 200 },
+    { status: 'Todo', taskCount: 237, subTaskCount: 120 },
+    { status: 'Done', taskCount: 73, subTaskCount: 190 }
 ];
 
 const chartConfig = {
-    count: {
-        label: 'Count',
+    taskCount: {
+        label: 'taskCount',
         color: '#2563eb'
+    },
+    subTaskCount: {
+        label: 'subTaskCount',
+        color: '#60a5fa'
     }
-    // mobile: {
-    //    label: "Mobile",
-    //    color: "#60a5fa",
-    //  },
 } satisfies ChartConfig;
 
 export function Component() {
     const { state, contents: AnalyticsData } =
         useRecoilValueLoadable(analyticsAtom);
     if (state == 'hasValue') {
-        chartData[0].count = AnalyticsData?.Backlog;
-        chartData[1].count = AnalyticsData?.Progress;
-        chartData[2].count = AnalyticsData?.Todo;
-        chartData[3].count = AnalyticsData?.Done;
+        chartData[0].taskCount = AnalyticsData?.Backlog[0];
+        chartData[0].subTaskCount = AnalyticsData?.Backlog[1];
+        chartData[1].taskCount = AnalyticsData?.Progress[0];
+        chartData[1].subTaskCount = AnalyticsData?.Progress[1];
+        chartData[2].taskCount = AnalyticsData?.Todo[0];
+        chartData[2].subTaskCount = AnalyticsData?.Todo[1];
+        chartData[3].taskCount = AnalyticsData?.Done[0];
+        chartData[3].subTaskCount = AnalyticsData?.Done[1];
     }
     return (
         <ChartContainer
@@ -57,11 +59,16 @@ export function Component() {
                 <ChartLegend content={<ChartLegendContent />} />
                 <Bar
                     className="flex gap-10"
-                    dataKey="count"
-                    fill="var(--color-count)"
+                    dataKey="taskCount"
+                    fill="var(--color-taskCount)"
                     radius={6}
                 />
-                {/* <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} /> */}
+                <Bar
+                    className="flex gap-10"
+                    dataKey="subTaskCount"
+                    fill="var(--color-subTaskCount)"
+                    radius={6}
+                />
             </BarChart>
         </ChartContainer>
     );
