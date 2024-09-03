@@ -64,7 +64,7 @@ const Appbar = () => {
                                 value={tabItem ?? 'Home'}
                                 className=" hidden md:block"
                             >
-                                <TabsList className="grid w-[20vw] grid-cols-3">
+                                <TabsList className="grid w-[24vw] grid-cols-4">
                                     <TabsTrigger
                                         onClick={() => {
                                             localStorage.setItem('tab', 'Home');
@@ -88,6 +88,19 @@ const Appbar = () => {
                                         value="Tasks"
                                     >
                                         Tasks
+                                    </TabsTrigger>
+                                    <TabsTrigger
+                                        onClick={() => {
+                                            localStorage.setItem(
+                                                'tab',
+                                                'Analytics'
+                                            );
+                                            setTabItem('Analytics');
+                                            router.push('/Analytics');
+                                        }}
+                                        value="Analytics"
+                                    >
+                                        Analytics
                                     </TabsTrigger>
                                     <TabsTrigger
                                         onClick={() => {

@@ -1,7 +1,11 @@
 const View = () => {
     return (
         <main className="flex  flex-col items-center justify-between ">
-            <h1>Calednar layout</h1>
+            <div className="my-4">
+                <h2 className="my-10 text-xl text-center sm:text-4xl dark:text-white text-black">
+                    Calendar View
+                </h2>
+            </div>
         </main>
     );
 };
