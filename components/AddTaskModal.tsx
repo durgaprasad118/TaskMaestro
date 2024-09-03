@@ -51,7 +51,7 @@ export function AddTaskModal() {
                     title: title,
                     date: date ?? new Date(),
                     priority: priority,
-                    subTasks: [...tasks],
+                    subTasks: tasks.filter((x) => x.title != ''),
                     labels: [...tags]
                 }
             );

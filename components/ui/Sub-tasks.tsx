@@ -24,7 +24,7 @@ const Subtasks = ({
 
     function handleAddSubTask(index: number, title: string) {
         setTasks((prev) => {
-            const newTasks = [...prev];
+            const newTasks = prev.filter((x) => x.title != '');
             newTasks[index] = { ...newTasks[index], title };
             return newTasks;
         });

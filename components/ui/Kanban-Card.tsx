@@ -19,6 +19,7 @@ import {
     SelectValue
 } from '@/components/ui/select';
 import { allTasksAtom } from '@/store';
+import { analyticsAtom } from '@/store/atoms';
 import axios from 'axios';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
@@ -42,7 +43,6 @@ import {
 import Spinner from './Spinner';
 import Subtasks from './Sub-tasks';
 import { TagsInput } from './TagsInput';
-import { analyticsAtom } from '@/store/atoms';
 declare type PriorityNameType = 'P1' | 'P2' | 'P3';
 export const BageForPriority: Record<PriorityNameType, string> = {
     P1: 'red',
@@ -81,7 +81,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
         const [deleting, setDeleting] = useState(false);
         const refresh = useRecoilRefresher_UNSTABLE(allTasksAtom);
         const AnalyticRefresh = useRecoilRefresher_UNSTABLE(analyticsAtom);
-        let taskcount = tasks.length;
+        let taskcount = tasks.filter((x) => x.title != '').length;
         let doneTasks = tasks.filter((x) => x.completed).length;
         const handleDelete = async () => {
             try {
@@ -119,7 +119,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                         title: title,
                         date: date,
                         priority: prior,
-                        subTasks: [...tasks],
+                        subTasks: tasks.filter((x) => x.title != ''),
                         labels: [...tags],
                         status: status,
                         taskId: taskID

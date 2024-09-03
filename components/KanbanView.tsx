@@ -24,7 +24,6 @@ import { toast } from 'sonner';
 import { AddTaskModal } from './AddTaskModal';
 import SmallerDevicesError from './SmallerDevicesError';
 import { KanbanList } from './ui/Kanban-list';
-import { analyticsAtom } from '@/store/atoms';
 
 const KanbanView = () => {
     const [kanbanData, setKanbanData] = useRecoilState(KanbanDataAtom);
@@ -36,7 +35,6 @@ const KanbanView = () => {
     );
 
     const refresh = useRecoilRefresher_UNSTABLE(allTasksAtom);
-    const AnalyticRefresh = useRecoilRefresher_UNSTABLE(analyticsAtom);
     const { state, contents: Tasks } = useRecoilValueLoadable(allTasksAtom);
     const [isClient, setIsClient] = useState(false);
     useEffect(() => {
@@ -63,7 +61,6 @@ const KanbanView = () => {
             toast.error('Error changing status');
         } finally {
             refresh();
-            AnalyticRefresh();
         }
     };
 
