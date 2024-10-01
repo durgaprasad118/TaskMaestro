@@ -61,7 +61,18 @@ const filteredKanbanDataSelector = selector<KanbanListType[]>({
 });
 const layoutAtom = atom({
     key: 'layoutAtom',
-    default: localStorage.getItem('tab') ?? localStorage.setItem('tab', 'Home')
+    default:
+        typeof window !== 'undefined'
+            ? (() => {
+                  const tab = localStorage.getItem('tab');
+                  if (tab) {
+                      return tab;
+                  } else {
+                      localStorage.setItem('tab', 'Home');
+                      return 'Home';
+                  }
+              })()
+            : 'Home'
 });
 
 //for add modal closing and opening
