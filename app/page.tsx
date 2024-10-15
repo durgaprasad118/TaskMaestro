@@ -1,4 +1,3 @@
-import KanbanView from '@/components/KanbanView';
 import { LandingPage } from '@/components/Landing';
 export default function Home() {
     return (

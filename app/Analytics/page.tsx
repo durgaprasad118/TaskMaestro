@@ -27,8 +27,7 @@ const chartConfig = {
         color: '#60a5fa'
     }
 } satisfies ChartConfig;
-
-export function AnalyticComponent() {
+function AnalyticComponent() {
     const { state, contents: AnalyticsData } =
         useRecoilValueLoadable(analyticsAtom);
     if (state == 'hasValue') {
