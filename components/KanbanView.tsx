@@ -47,22 +47,25 @@ const KanbanView = () => {
         setIsClient(true);
     }, []);
 
-    const SortData = async (status: string, id: string) => {
-        try {
-            await axios.put(
-                process.env.NEXT_PUBLIC_BASE_URL + `/changeStatus/`,
-                {
-                    status,
-                    id
-                }
-            );
-        } catch (error) {
-            console.error(error);
-            toast.error('Error changing status');
-        } finally {
-            refresh();
-        }
-    };
+    const SortData = useCallback(
+        async (status: string, id: string) => {
+            try {
+                await axios.put(
+                    process.env.NEXT_PUBLIC_BASE_URL + `/changeStatus/`,
+                    {
+                        status,
+                        id
+                    }
+                );
+            } catch (error) {
+                console.error(error);
+                toast.error('Error changing status');
+            } finally {
+                refresh();
+            }
+        },
+        [refresh]
+    );
 
     const onDragStart = useCallback(
         (initial: DragStart): void => {

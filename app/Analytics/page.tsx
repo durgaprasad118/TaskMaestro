@@ -28,7 +28,7 @@ const chartConfig = {
     }
 } satisfies ChartConfig;
 
-export function Component() {
+export function AnalyticComponent() {
     const { state, contents: AnalyticsData } =
         useRecoilValueLoadable(analyticsAtom);
     if (state == 'hasValue') {
@@ -82,7 +82,7 @@ const View = () => {
                 </h2>
             </div>
 
-            <Component />
+            <AnalyticComponent />
         </main>
     );
 };
