@@ -35,13 +35,13 @@ const KanbanView = () => {
     );
 
     const refresh = useRecoilRefresher_UNSTABLE(allTasksAtom);
-    const { state, contents: Tasks } = useRecoilValueLoadable(allTasksAtom);
+    const { state, contents } = useRecoilValueLoadable(allTasksAtom);
     const [isClient, setIsClient] = useState(false);
     useEffect(() => {
         if (state === 'hasValue') {
-            setKanbanData(Tasks);
+            setKanbanData(contents.tasks);
         }
-    }, [state, Tasks, setKanbanData]);
+    }, [state, contents.tasks, setKanbanData]);
 
     useEffect(() => {
         setIsClient(true);

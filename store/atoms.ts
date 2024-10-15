@@ -19,21 +19,16 @@ const allTasksAtom = atom({
             const { data } = await axios.get(
                 `${process.env.NEXT_PUBLIC_BASE_URL}/gettasks`
             );
-            return data?.tasks;
+            return data;
         }
     })
 });
-const analyticsAtom = atom({
-    key: 'analyticsAtom',
-    default: selector({
-        key: 'analyticsSelector',
-        get: async () => {
-            const { data } = await axios.get(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/gettasks`
-            );
-            return data?.analytics;
-        }
-    })
+const analyticsAtom = selector({
+    key: 'analyticsSelector',
+    get: async ({ get }) => {
+        const data = get(allTasksAtom);
+        return data.analytics;
+    }
 });
 const filteredKanbanDataSelector = selector<KanbanListType[]>({
     key: 'filteredKanbanDataSelector',
