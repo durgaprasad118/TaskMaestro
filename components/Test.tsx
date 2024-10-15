@@ -21,8 +21,10 @@ import {
     SelectTrigger,
     SelectValue
 } from './ui/select';
+import { useState } from 'react';
 
 export default function DialogDemo() {
+    const [date, setDate] = useState<Date | undefined>(undefined);
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -64,7 +66,7 @@ export default function DialogDemo() {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        <DatePickerWithPresets />
+                        <DatePickerWithPresets date={date} setDate={setDate} />
                     </div>
                 </div>
                 <div className="grid gap-4 py-4">
