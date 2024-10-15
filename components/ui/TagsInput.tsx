@@ -28,7 +28,7 @@ function TagsInput({ tags, setTags }: TagsInputProps) {
         <div className="flex gap-1 items-center flex-wrap bg-white border border-slate-800 rounded-lg shadow  dark:bg-slate-800 hover:bg-slate-900">
             <AnimatePresence>
                 {tags.map((tag, index) => (
-                    <div className="flex flex-wrap gap-2 pt-1 p-1">
+                    <div key={tag} className="flex flex-wrap gap-2 pt-1 p-1">
                         <motion.div
                             key={tag}
                             animate={{ y: 0, opacity: 1 }}

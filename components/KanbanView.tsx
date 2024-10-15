@@ -122,7 +122,7 @@ const KanbanView = () => {
 
             setKanbanData(updatedKanbanData);
         },
-        [kanbanData, draggedItem, setKanbanData]
+        [SortData, kanbanData, draggedItem, setKanbanData]
     );
 
     if (!isClient) {

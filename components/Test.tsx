@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { DatePickerWithPresets } from './ui/DataPicker';
 import {
     Select,
     SelectContent,
@@ -20,8 +21,6 @@ import {
     SelectTrigger,
     SelectValue
 } from './ui/select';
-import { DatePickerWithPresets } from './ui/DataPicker';
-import { motion } from 'framer-motion';
 
 export default function DialogDemo() {
     return (
@@ -35,7 +34,7 @@ export default function DialogDemo() {
                     <DialogTitle>Edit profile</DialogTitle>
                     <DialogDescription>
                         Make changes to your profile here. Click save when
-                        you're done.
+                        you&apos;re done.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col gap-2">
