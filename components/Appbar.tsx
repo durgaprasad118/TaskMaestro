@@ -139,18 +139,15 @@ const Appbar = () => {
                                     </AvatarFallback>
                                 </Avatar>
                             </DropdownMenuTrigger>
-
-                            <DropdownMenuContent className="w-48 text-center">
+                            <DropdownMenuContent className="w-auto p-4 text-center translate-x-[-5]">
                                 <DropdownMenuLabel>
                                     {session.data?.user?.name}
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuRadioItem value="Settings">
-                                    Settings
-                                </DropdownMenuRadioItem>
                                 <DropdownMenuRadioItem
                                     onClick={() => signOut()}
                                     value="Log Out"
+                                    className="text-center flex justify-center items-center"
                                 >
                                     Log Out
                                 </DropdownMenuRadioItem>

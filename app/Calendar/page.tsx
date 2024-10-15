@@ -6,6 +6,8 @@ const View = () => {
                     Calendar View
                 </h2>
             </div>
+
+            <p className="mx-auto">Work in progress</p>
         </main>
     );
 };
