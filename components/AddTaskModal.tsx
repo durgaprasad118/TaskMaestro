@@ -64,6 +64,9 @@ export function AddTaskModal() {
                 setTasks([]);
                 setTags([]);
                 setAddingTask(false);
+                const response = await axios.put(
+                    process.env.NEXT_PUBLIC_BASE_URL + '/backlog'
+                );
             } else if (data.error) {
                 toast.error(data.error.message ?? 'Failed to create task');
                 setAddingTask(false);

@@ -32,6 +32,7 @@ import { Checkbox } from './checkbox';
 import { DatePickerWithPresets } from './DataPicker';
 import { Input } from './input';
 import { Label } from './label';
+import { startOfToday, isBefore } from 'date-fns';
 import {
     Sheet,
     SheetClose,
@@ -127,6 +128,16 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                 );
                 if (data.task) {
                     toast.success(data?.message);
+                    if (data.task.status !== 'Backlog' && data.task.date) {
+                        const taskDate = new Date(data.task.date);
+                        const today = startOfToday();
+
+                        if (isBefore(taskDate, today)) {
+                            const response = await axios.put(
+                                process.env.NEXT_PUBLIC_BASE_URL + '/backlog'
+                            );
+                        }
+                    }
                     refresh();
                 } else if (data.error) {
                     toast.error(data.error.message ?? 'Failed to update task');
