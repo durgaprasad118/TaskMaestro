@@ -3,7 +3,6 @@ import { startOfToday } from 'date-fns';
 import { NextResponse } from 'next/server';
 export async function PUT() {
     const today = startOfToday();
-    console.log('function backloggy called');
     try {
         const overdueTasks = await db.task.updateMany({
             where: {

@@ -44,6 +44,7 @@ import {
 import Spinner from './Spinner';
 import Subtasks from './Sub-tasks';
 import { TagsInput } from './TagsInput';
+import { PUT } from '@/app/api/backlog/route';
 declare type PriorityNameType = 'P1' | 'P2' | 'P3';
 export const BageForPriority: Record<PriorityNameType, string> = {
     P1: 'red',
@@ -133,9 +134,14 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                         const today = startOfToday();
 
                         if (isBefore(taskDate, today)) {
-                            const response = await axios.put(
-                                process.env.NEXT_PUBLIC_BASE_URL + '/backlog'
-                            );
+                            try {
+                                const response = await axios.put(
+                                    process.env.NEXT_PUBLIC_BASE_URL +
+                                        '/backlog'
+                                );
+                            } catch (er) {
+                                console.log(er);
+                            }
                         }
                     }
                     refresh();
