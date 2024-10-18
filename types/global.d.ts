@@ -6,6 +6,7 @@ declare type KanbanCardType = {
     labels?: string[];
     Status?: Status;
     subTasks: TaskProps[];
+    completed: boolean;
 };
 
 declare type PriorityType = 'P1' | 'P2' | 'P3';

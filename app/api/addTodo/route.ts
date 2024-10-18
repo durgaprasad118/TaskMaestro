@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
                         status: 'Todo',
                         labels,
                         userId: user.id,
+                        completed:false,
                         subTasks: {
                             create: subTasks.map(
                                 (task: {

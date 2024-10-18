@@ -65,6 +65,7 @@ model Task {
   labels    String[]
   subTasks  SubTask[]
   priority  Priority
+  completed Boolean   @default(false) 
   status    Status    @default(Todo)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

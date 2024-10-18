@@ -10,6 +10,7 @@ export async function PUT(req: NextRequest) {
         subTasks,
         priority,
         status,
+        completed,
         taskId
     }: {
         title: string;
@@ -18,6 +19,7 @@ export async function PUT(req: NextRequest) {
         priority: PriorityType;
         subTasks: TaskProps[];
         status: Status;
+        completed:boolean,
         taskId: string;
     } = await req.json();
 
@@ -46,6 +48,7 @@ export async function PUT(req: NextRequest) {
                         title: title,
                         date: date,
                         priority: priority,
+                       completed:completed, 
                         subTasks: {
                             create: subTasks.map(
                                 (task: {
@@ -59,7 +62,7 @@ export async function PUT(req: NextRequest) {
                         },
                         status,
                         labels,
-                        userId: user.id
+                        userId: user.id,
                     }
                 });
 

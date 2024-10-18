@@ -18,7 +18,6 @@ export async function GET(req: NextRequest) {
             where: { email: userEmail },
             include: { tasks: { include: { subTasks: true } } }
         });
-
         if (!userWithTasks) {
             return NextResponse.json(
                 { message: 'Tasks not found' },
