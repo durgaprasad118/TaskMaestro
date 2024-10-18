@@ -87,23 +87,6 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
         let taskcount = tasks.filter((x) => x.title != '').length;
         let doneTasks = tasks.filter((x) => x.completed).length;
 
-        const handleStatusChange = async (status: string, id: string) => {
-            try {
-                const { data } = await axios.put(
-                    process.env.NEXT_PUBLIC_BASE_URL + `/changeStatus/`,
-                    {
-                        status,
-                        id
-                    }
-                );
-                console.log(data);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                refresh();
-                AnalyticRefresh();
-            }
-        };
         const handleDelete = async () => {
             try {
                 setDeleting(true);
@@ -116,7 +99,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                 if (data.task) {
                     toast.success(data?.message);
                 } else if (data.error) {
-                    toast.error(data.error.message ?? 'Failed to update task');
+                    toast.error(data.error.message ?? 'Failed to delete task');
                 }
             } catch (error) {
                 console.log(error);
@@ -135,24 +118,27 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                     return;
                 }
                 let updatedStatus = status;
-                if (updatedStatus === 'Backlog' && !taskComplted) {
-                    if (date) {
-                        if (isAfter(date, startOfToday()) || isToday(date)) {
-                            const isSubTaskDoneCount =
-                                tasks &&
-                                tasks.filter((x) => x.completed).length;
-                            console.log(isSubTaskDoneCount);
-                            updatedStatus =
-                                isSubTaskDoneCount > 0 ? 'Progress' : 'Todo';
-                        }
-                    }
-                }
-                if (taskComplted && updatedStatus !== 'Done') {
-                    updatedStatus = 'Done'; 
+                if (taskComplted && updatedStatus === 'Backlog') {
+                    updatedStatus = 'Done';
+                } else if (taskComplted && updatedStatus !== 'Done') {
+                    updatedStatus = 'Done';
                 } else if (!taskComplted && updatedStatus === 'Done') {
-                    const isSubTaskDoneCount = tasks && tasks.filter((x) => x.completed).length;
-                    updatedStatus = isSubTaskDoneCount > 0 ? 'Progress' : 'Todo';
+                    const isSubTaskDoneCount =
+                        tasks && tasks.filter((x) => x.completed).length;
+                    updatedStatus =
+                        isSubTaskDoneCount > 0 ? 'Progress' : 'Todo';
+                } else if (
+                    updatedStatus === 'Backlog' &&
+                    !taskComplted &&
+                    date &&
+                    (isAfter(date, startOfToday()) || isToday(date))
+                ) {
+                    const isSubTaskDoneCount =
+                        tasks && tasks.filter((x) => x.completed).length;
+                    updatedStatus =
+                        isSubTaskDoneCount > 0 ? 'Progress' : 'Todo';
                 }
+
                 const { data } = await axios.put(
                     process.env.NEXT_PUBLIC_BASE_URL + '/updatetask' || '',
                     {
@@ -168,7 +154,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                 );
                 if (data.task) {
                     toast.success(data?.message);
-                    if (data.task.status !== 'Backlog' && data.task.date) {
+                    if (data.task.status !== 'Backlog' && data.task.date && !data.task.completed) {
                         const taskDate = new Date(data.task.date);
                         const today = startOfToday();
 
@@ -233,11 +219,11 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                 <div className="flex items-center space-x-2">
                                     <Checkbox
                                         className="rounded-full"
-                                        onClick={ (e) => {
+                                        onClick={(e) => {
                                             e.stopPropagation();
                                             const taskComplted = !done;
                                             setDone(taskComplted);
-                                             UpdateTask(taskComplted);
+                                            UpdateTask(taskComplted);
                                         }}
                                         checked={done}
                                         id={id}
