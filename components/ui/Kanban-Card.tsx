@@ -21,7 +21,7 @@ import {
 import { allTasksAtom } from '@/store';
 import { analyticsAtom } from '@/store/atoms';
 import axios from 'axios';
-import { format } from 'date-fns';
+import { format, isAfter, isToday } from 'date-fns';
 import { motion } from 'framer-motion';
 import { Calendar as CalendarIcon, Tag, Tags } from 'lucide-react';
 import { forwardRef, useId, useState } from 'react';
@@ -44,7 +44,6 @@ import {
 import Spinner from './Spinner';
 import Subtasks from './Sub-tasks';
 import { TagsInput } from './TagsInput';
-import { PUT } from '@/app/api/backlog/route';
 declare type PriorityNameType = 'P1' | 'P2' | 'P3';
 export const BageForPriority: Record<PriorityNameType, string> = {
     P1: 'red',
@@ -70,6 +69,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
             labels,
             index,
             status,
+            completed,
             ...args
         },
         ref
@@ -79,12 +79,31 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
         const [date, setDate] = useState<Date | undefined>(new Date(taskDate));
         const [title, setTitle] = useState<string>(taskTitle || ' ');
         const [prior, setPriority] = useState<PriorityType>(priority);
+        const [done, setDone] = useState<boolean>(completed);
         const [updating, setUpdating] = useState(false);
         const [deleting, setDeleting] = useState(false);
         const refresh = useRecoilRefresher_UNSTABLE(allTasksAtom);
         const AnalyticRefresh = useRecoilRefresher_UNSTABLE(analyticsAtom);
         let taskcount = tasks.filter((x) => x.title != '').length;
         let doneTasks = tasks.filter((x) => x.completed).length;
+
+        const handleStatusChange = async (status: string, id: string) => {
+            try {
+                const { data } = await axios.put(
+                    process.env.NEXT_PUBLIC_BASE_URL + `/changeStatus/`,
+                    {
+                        status,
+                        id
+                    }
+                );
+                console.log(data);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                refresh();
+                AnalyticRefresh();
+            }
+        };
         const handleDelete = async () => {
             try {
                 setDeleting(true);
@@ -107,13 +126,32 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                 AnalyticRefresh();
             }
         };
-        const UpdateTask = async () => {
+        const UpdateTask = async (taskComplted: boolean) => {
             try {
                 setUpdating(true);
                 if (!title) {
                     toast.error('Title is mandatory');
                     setUpdating(false);
                     return;
+                }
+                let updatedStatus = status;
+                if (updatedStatus === 'Backlog' && !taskComplted) {
+                    if (date) {
+                        if (isAfter(date, startOfToday()) || isToday(date)) {
+                            const isSubTaskDoneCount =
+                                tasks &&
+                                tasks.filter((x) => x.completed).length;
+                            console.log(isSubTaskDoneCount);
+                            updatedStatus =
+                                isSubTaskDoneCount > 0 ? 'Progress' : 'Todo';
+                        }
+                    }
+                }
+                if (taskComplted && updatedStatus !== 'Done') {
+                    updatedStatus = 'Done'; 
+                } else if (!taskComplted && updatedStatus === 'Done') {
+                    const isSubTaskDoneCount = tasks && tasks.filter((x) => x.completed).length;
+                    updatedStatus = isSubTaskDoneCount > 0 ? 'Progress' : 'Todo';
                 }
                 const { data } = await axios.put(
                     process.env.NEXT_PUBLIC_BASE_URL + '/updatetask' || '',
@@ -123,7 +161,8 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                         priority: prior,
                         subTasks: tasks.filter((x) => x.title != ''),
                         labels: [...tags],
-                        status: status,
+                        completed: taskComplted,
+                        status: updatedStatus,
                         taskId: taskID
                     }
                 );
@@ -194,6 +233,13 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                 <div className="flex items-center space-x-2">
                                     <Checkbox
                                         className="rounded-full"
+                                        onClick={ (e) => {
+                                            e.stopPropagation();
+                                            const taskComplted = !done;
+                                            setDone(taskComplted);
+                                             UpdateTask(taskComplted);
+                                        }}
+                                        checked={done}
                                         id={id}
                                     />
                                     <p className="group-hover:translate-x-1 overflow-hidden  text-ellipsis whitespace-nowrap  transition-transform duration-200 font-bold text-neutral-800 dark:text-slate-300 relative z-20">
@@ -271,7 +317,9 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                                 <div className="flex flex-row items-center  text-violet-500">
                                                     <Tags className="h-3 scale-x-[-1]" />
                                                     <span className="text-xs uppercase text-violet-500 font-medium">
-                                                        {`${labels[0]} +${labels?.length - 1}`}
+                                                        {`${labels[0]} +${
+                                                            labels?.length - 1
+                                                        }`}
                                                     </span>
                                                 </div>
                                             ))}
@@ -285,18 +333,26 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                 <SheetTitle>Update Task</SheetTitle>
                             </SheetHeader>
                             <div className="flex flex-col gap-2 mt-2">
-                                <div className="grid my-2 w-full gap-2">
-                                    <Label>Task Name</Label>
-                                    <Input
-                                        className="w-full"
-                                        type="text"
-                                        value={title}
-                                        onChange={(e) =>
-                                            setTitle(e.target.value)
-                                        }
-                                        id="task name"
-                                        placeholder="task name"
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox
+                                        className="h-5 w-5 border-slate-700 mt-3 "
+                                        checked={done}
+                                        onClick={() => setDone(!done)}
+                                        id={id}
                                     />
+                                    <div className="grid my-2 w-full gap-2">
+                                        <Label>Task Name</Label>
+                                        <Input
+                                            className="w-full"
+                                            type="text"
+                                            value={title}
+                                            onChange={(e) =>
+                                                setTitle(e.target.value)
+                                            }
+                                            id="task name"
+                                            placeholder="task name"
+                                        />
+                                    </div>
                                 </div>
                                 <div className="flex gap-2 flex-col">
                                     <div className="flex gap-2">
@@ -348,7 +404,7 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                 <div className="flex my-5 items-center w-full justify-center">
                                     <SheetClose asChild>
                                         <button
-                                            onClick={UpdateTask}
+                                            onClick={() => UpdateTask(done)}
                                             className="w-3/4 dark:bg-green-500 dark:text-white hover:bg-green-800 hover:scale-105 transition-all duration-300 text-sm px-3 py-2 rounded-md border border-black"
                                             disabled={updating}
                                         >
