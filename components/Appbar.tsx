@@ -64,7 +64,7 @@ const Appbar = () => {
                                 value={tabItem ?? 'Home'}
                                 className=" hidden md:block"
                             >
-                                <TabsList className="grid w-[24vw] grid-cols-4">
+                                <TabsList className="grid w-[24vw] grid-cols-3">
                                     <TabsTrigger
                                         onClick={() => {
                                             localStorage.setItem('tab', 'Home');
@@ -102,7 +102,8 @@ const Appbar = () => {
                                     >
                                         Analytics
                                     </TabsTrigger>
-                                    <TabsTrigger
+                                    {/* <TabsTrigger
+                                    in the tablist put grid cols to 4 if this is added in the future
                                         onClick={() => {
                                             localStorage.setItem(
                                                 'tab',
@@ -114,7 +115,7 @@ const Appbar = () => {
                                         value="Calendar"
                                     >
                                         Calendar
-                                    </TabsTrigger>
+                                    </TabsTrigger> */}
                                 </TabsList>
                             </Tabs>
                         </div>
