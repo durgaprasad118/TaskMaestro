@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth';
 import { NextRequest } from 'next/server';
 
 export async function PUT(req: NextRequest) {
-    const { status, id } = await req.json();
+    const { status, id, completed } = await req.json();
     const session = await getServerSession();
     const userEmail = session?.user?.email;
     if (userEmail) {
@@ -17,7 +17,8 @@ export async function PUT(req: NextRequest) {
                 const updatedTask = await db.task.update({
                     where: { id: id },
                     data: {
-                        status: status
+                        status: status,
+                        completed: completed
                     }
                 });
                 if (updatedTask) {

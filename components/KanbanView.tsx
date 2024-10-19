@@ -24,6 +24,7 @@ import { toast } from 'sonner';
 import { AddTaskModal } from './AddTaskModal';
 import SmallerDevicesError from './SmallerDevicesError';
 import { KanbanList } from './ui/Kanban-list';
+import { analyticsAtom } from '@/store/atoms';
 
 const KanbanView = () => {
     const [kanbanData, setKanbanData] = useRecoilState(KanbanDataAtom);
@@ -37,6 +38,8 @@ const KanbanView = () => {
     const refresh = useRecoilRefresher_UNSTABLE(allTasksAtom);
     const { state, contents } = useRecoilValueLoadable(allTasksAtom);
     const [isClient, setIsClient] = useState(false);
+    const [a, setA] = useState(false);
+    const AnalyticRefresh = useRecoilRefresher_UNSTABLE(analyticsAtom);
     useEffect(() => {
         if (state === 'hasValue') {
             setKanbanData(contents.tasks);
@@ -49,22 +52,46 @@ const KanbanView = () => {
 
     const SortData = useCallback(
         async (status: string, id: string) => {
+            let completed = false;
+            if (status === 'Done') {
+                completed = true;
+            }
             try {
-                await axios.put(
+                const { data } = await axios.put(
                     process.env.NEXT_PUBLIC_BASE_URL + `/changeStatus/`,
                     {
                         status,
-                        id
+                        id,
+                        completed: completed
                     }
                 );
+                setKanbanData(prevData => {
+                    const updatedKanbanData = prevData.map(list => {
+                        if (list.status === status) {
+                            return {
+                                ...list,
+                                listItems: list.listItems.filter(task => task.id !== id)
+                            };
+                        } else if (list.status === data.newStatus) {
+                            return {
+                                ...list,
+                                listItems: [...list.listItems, data.task]
+                            };
+                        }
+                        return list;
+                    });
+                    return updatedKanbanData;
+                });
             } catch (error) {
                 console.error(error);
                 toast.error('Error changing status');
             } finally {
                 refresh();
+                AnalyticRefresh();
             }
         },
-        [refresh]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [refresh, AnalyticRefresh]
     );
 
     const onDragStart = useCallback(
