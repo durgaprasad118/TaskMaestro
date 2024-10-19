@@ -27,6 +27,7 @@ import Subtasks from './ui/Sub-tasks';
 import { TagsInput } from './ui/TagsInput';
 import Spinner from './ui/Spinner';
 import { analyticsAtom } from '@/store/atoms';
+import { isBefore, startOfDay, startOfToday } from 'date-fns';
 export function AddTaskModal() {
     const [tags, setTags] = useState<string[]>([]);
     const [tasks, setTasks] = useState<TaskProps[]>([]);
@@ -45,6 +46,13 @@ export function AddTaskModal() {
                 setAddingTask(false);
                 return;
             }
+            let status: string = 'Todo';
+            const today = startOfToday();
+            if (date) {
+                if (isBefore(date, today)) {
+                    status = 'Backlog';
+                }
+            }
             const { data } = await axios.post(
                 process.env.NEXT_PUBLIC_BASE_URL + '/addTodo' || '',
                 {
@@ -53,7 +61,8 @@ export function AddTaskModal() {
                     priority: priority,
                     subTasks: tasks.filter((x) => x.title != ''),
                     labels: [...tags],
-                    completed:false
+                    completed: false,
+                    status: status
                 }
             );
             if (data.task) {
@@ -65,13 +74,6 @@ export function AddTaskModal() {
                 setTasks([]);
                 setTags([]);
                 setAddingTask(false);
-                try {
-                    const response = await axios.put(
-                        process.env.NEXT_PUBLIC_BASE_URL + '/backlog'
-                    );
-                } catch (er) {
-                    console.log(er);
-                }
             } else if (data.error) {
                 toast.error(data.error.message ?? 'Failed to create task');
                 setAddingTask(false);

@@ -154,15 +154,21 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                 );
                 if (data.task) {
                     toast.success(data?.message);
-                    if (data.task.status !== 'Backlog' && data.task.date && !data.task.completed) {
+                    if (
+                        data.task.status !== 'Backlog' &&
+                        data.task.date &&
+                        !data.task.completed
+                    ) {
                         const taskDate = new Date(data.task.date);
                         const today = startOfToday();
-
                         if (isBefore(taskDate, today)) {
                             try {
                                 const response = await axios.put(
                                     process.env.NEXT_PUBLIC_BASE_URL +
-                                        '/backlog'
+                                        '/backlog',
+                                    {
+                                        id: taskID
+                                    }
                                 );
                             } catch (er) {
                                 console.log(er);

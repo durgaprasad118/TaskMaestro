@@ -2,7 +2,8 @@ import { db } from '@/db';
 import { getServerSession } from 'next-auth';
 import { NextRequest } from 'next/server';
 export async function POST(req: NextRequest) {
-    const { title, date, labels, subTasks, priority } = await req.json();
+    const { title, date, status, labels, subTasks, priority } =
+        await req.json();
     const session = await getServerSession();
     const userEmail = session?.user?.email;
     if (userEmail) {
@@ -18,10 +19,10 @@ export async function POST(req: NextRequest) {
                         title,
                         date,
                         priority,
-                        status: 'Todo',
+                        status: status ?? 'Todo',
                         labels,
                         userId: user.id,
-                        completed:false,
+                        completed: false,
                         subTasks: {
                             create: subTasks.map(
                                 (task: {
