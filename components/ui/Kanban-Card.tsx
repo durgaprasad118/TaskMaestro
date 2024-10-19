@@ -21,7 +21,7 @@ import {
 import { allTasksAtom } from '@/store';
 import { analyticsAtom } from '@/store/atoms';
 import axios from 'axios';
-import { format, isAfter, isToday } from 'date-fns';
+import { format, isAfter, isBefore, isToday, startOfToday } from 'date-fns';
 import { motion } from 'framer-motion';
 import { Calendar as CalendarIcon, Tag, Tags } from 'lucide-react';
 import { forwardRef, useId, useState } from 'react';
@@ -32,7 +32,6 @@ import { Checkbox } from './checkbox';
 import { DatePickerWithPresets } from './DataPicker';
 import { Input } from './input';
 import { Label } from './label';
-import { startOfToday, isBefore } from 'date-fns';
 import {
     Sheet,
     SheetClose,
@@ -188,6 +187,95 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
             }
         };
         let id = `${taskID}-${taskDate}`;
+        if (updating) {
+            return (
+                <div
+                    ref={ref}
+                    id={id}
+                    {...args}
+                    key={id}
+                    className="relative group bg-gradient-to-b dark:from-slate-900 from-slate-200 dark:to-slate-950 to-slate-300 p-6 rounded-3xl overflow-hidden"
+                >
+                    <Grid size={20} />
+                    <Badge theme={BageForPriority[priority]} className="mb-2">
+                        P1
+                    </Badge>
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            className="rounded-full"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                            }}
+                            checked={false}
+                            id={id}
+                        />
+                        <p className="group-hover:translate-x-1 overflow-hidden  text-ellipsis whitespace-nowrap  transition-transform duration-200 font-bold text-neutral-800 dark:text-slate-300 relative z-20">
+                            {'Title ...'}
+                        </p>
+                    </div>
+
+                    <div className="my-3 flex flex-row items-center mr-4">
+                        <div className="flex items-center">
+                            <CalendarIcon className="h-3" />
+                            <span className="text-gray-400 font-medium text-xs">
+                                date
+                            </span>
+                        </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="1em"
+                                height="1em"
+                                viewBox="0 0 24 24"
+                            >
+                                <g fill="none" stroke="#7c3aed" strokeWidth={2}>
+                                    <rect
+                                        width={4}
+                                        height={4}
+                                        x={18}
+                                        y={9}
+                                        rx={2}
+                                        transform="rotate(90 18 9)"
+                                    ></rect>
+                                    <rect
+                                        width={4}
+                                        height={4}
+                                        x={18}
+                                        y={17}
+                                        rx={2}
+                                        transform="rotate(90 18 17)"
+                                    ></rect>
+                                    <rect
+                                        width={4}
+                                        height={4}
+                                        x={3}
+                                        y={7}
+                                        rx={2}
+                                        transform="rotate(-90 3 7)"
+                                    ></rect>
+                                    <path d="M5 8v7c0 1.886 0 2.828.586 3.414C6.172 19 7.114 19 9 19h5"></path>
+                                    <path d="M5 7c0 1.886 0 2.828.586 3.414C6.172 11 7.114 11 9 11h5"></path>
+                                </g>
+                            </svg>
+                            <span className="text-xs font-medium text-slate-400">
+                                {'done tasks/total tasks'}
+                            </span>
+                        </div>
+                        <div>
+                            <div className="flex flex-row items-center text-violet-500  ">
+                                <Tag className="h-3 scale-x-[-1]" />
+                                <span className="text-xs uppercase text-violet-500 font-medium">
+                                    xyz
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <motion.div
                 initial={{
@@ -398,13 +486,8 @@ export const KanbanCard = forwardRef<HTMLDivElement, KanbanCardProps>(
                                         <button
                                             onClick={() => UpdateTask(done)}
                                             className="w-3/4 dark:bg-green-500 dark:text-white hover:bg-green-800 hover:scale-105 transition-all duration-300 text-sm px-3 py-2 rounded-md border border-black"
-                                            disabled={updating}
                                         >
-                                            {updating ? (
-                                                <Spinner />
-                                            ) : (
-                                                'Update Task'
-                                            )}
+                                            Update Task
                                         </button>
                                     </SheetClose>
                                 </div>
