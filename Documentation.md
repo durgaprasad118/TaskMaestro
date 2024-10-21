@@ -1,0 +1,43 @@
+## Tech Stack Used
+- Next.js
+- Next auth for authentication
+    - github
+    - google based auth
+- Styling
+    - tailwindCSS
+    - Shadcn components
+    - Aceternity UI - For bg and few animations
+- Drag and drop
+    - react-beautiful-dnd
+- Sonner - toasts
+- recoil - state management library
+- lucide-react - for icons
+- DB
+    - postgresql ( aivein service)
+    - prisma ORM
+
+
+## How does it work?
+- A user can sign up and signin using google and 
+- You will be taken to the home page by default
+- When you click `go to dashboard` or `Tasks` it navigates to the task view page
+-  **Add Task** : Allows us to add a task 
+   -  We can add due date, title, subTasks, labels..
+   -  if the task date is greater than today it moves to `to-do` section by default
+   -  if the due date of the task is lesser then it moves to the `backlog` section automatically
+-  **Update Task** : Update task allows us to update all the feilds 
+   -  Similarly in the add todo depending on the due date the task is moved to their corresponding sections.
+   -  If there are one or more done sub-tasks then it moves to `progress` else remains in the `to-do` section.
+   -  We can toggle the todo status there is a checkbox to mark it as done.
+      -  If we mark it as done it moves to the `done` section and if we uncheck it depending on the subtasks(if one or more done moves to `progress` else `to-do`) the sections are changed.
+-  **Delete Task** : On clicking update we can see a `delete-button` which removes from the dashboard and the database and auto refreshes.
+-  **Analytics Section** : There is an analytics section which shows a chart view depending on the tasks and the sub-tasks count.
+   -  It updates along with the tasks.
+-  **Debounced Search Bar** : A debounced search bar is enabled for searching the tasks  
+-  **Change Status**: When we drag to the desired section the task stays there.
+   - If the task is moved to `Done` section it automatically marks as done
+   - If we move away from `Done` 
+     -  First due date is checked if it passes the current date then moves to `Backlog`
+     -  If that is not the case it moves to `progress` and `to-do` according to the number of subtasks tasks avilable.
+- Every day at 12:00 AM there is a [cron-job](cron-job.org) running which checks the due date of the task.
+  - if the due date passes current date then the task is moved to `backlog` else it stays where it is.
