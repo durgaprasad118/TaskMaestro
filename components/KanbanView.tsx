@@ -42,7 +42,8 @@ const KanbanView = () => {
     if (state === 'hasValue') {
       setKanbanData(contents.tasks);
     }
-  }, [state, contents.tasks]);
+  }, [state, contents.tasks, setKanbanData]);
+  console.log(kanbanData);
 
   useEffect(() => {
     setIsClient(true);

@@ -41,3 +41,4 @@
      -  If that is not the case it moves to `progress` and `to-do` according to the number of subtasks tasks avilable.
 - Every day at 12:00 AM there is a [cron-job](cron-job.org) running which checks the due date of the task.
   - if the due date passes current date then the task is moved to `backlog` else it stays where it is.
+- All the tasks will be in descending order of the dates. Like the task with nearest date will be on the top.
